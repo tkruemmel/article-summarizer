@@ -1,32 +1,34 @@
 import json
 from bs4 import BeautifulSoup
 import csv
-from kgk_controller import fetch_latest_posts, search_posts
-from html_segmenter import HTMLSegmenter
+#from kgk_controller import fetch_latest_posts, search_posts
+#from html_segmenter import HTMLSegmenter
 from langchain_community.document_loaders import JSONLoader, TextLoader
 from langchain_community.llms import Ollama
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.schema.document import Document
 
 
-# Isolating one post to experiment with
-def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
-    posts = fetch_latest_posts(url)
-    post = posts[3]["content"]["rendered"]
-    stripped_post = BeautifulSoup(post, features="html.parser").get_text()
-    with open("post.txt","w+") as file:
-        file.writelines(stripped_post)
-    return None
+# # Isolating one post to experiment with
+# def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
+#     posts = fetch_latest_posts(url)
+#     post = posts[3]["content"]["rendered"]
+#     stripped_post = BeautifulSoup(post, features="html.parser").get_text()
+#     with open("post.txt","w+") as file:
+#         file.writelines(stripped_post)
+#     return None
 
 
 #def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
 
 
-def get_json(): # json to lc Document?
-    posts = fetch_latest_posts("https://klassegegenklasse.org/wp-json/wp/v2/posts")
-    with open("posts.json", "w") as outfile:
-        json.dump(posts, outfile)
-    return None
+# def get_json(): # json to lc Document?
+#     posts = fetch_latest_posts("https://klassegegenklasse.org/wp-json/wp/v2/posts")
+#     with open("posts.json", "w") as outfile:
+#         json.dump(posts, outfile)
+#     return None
 
 
 def load_data(doc):
@@ -45,8 +47,13 @@ def save_summary(summary):
     with open("summary.txt","w+") as file:
         file.writelines(summary)
 
+def get_text_chunks_langchain(text):
+    text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+    docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
+    return docs
 
-def summarize(doc):
+
+def summarize(loaded_text):
     # Instantiate LLM
     llm = Ollama(model="phi3")
 
@@ -55,7 +62,7 @@ def summarize(doc):
 
     {text}
 
-    ZUSSAMENFASSUNG:"""
+    ZUSAMENFASSUNG:"""
     prompt_template = PromptTemplate(template=template,
                                      input_variables=["text"])
 
@@ -65,7 +72,7 @@ def summarize(doc):
                                  prompt=prompt_template,
                                  verbose=True)  # to see detailed prompt
 
-    loaded_text = load_data(doc)
+    #loaded_text = load_data(doc)
     summary = chain.invoke(loaded_text)
     output = summary["output_text"]
     print(output)
@@ -76,4 +83,4 @@ def summarize(doc):
 #get_test_post()
 #loaded_data = load_data("post.txt")
 #print(loaded_data)
-summarize("post.txt")
+#summarize("post.txt")
