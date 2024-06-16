@@ -1,6 +1,9 @@
 import requests
 from html_segmenter import HTMLSegmenter
 
+BASE_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
+
+
 def fetch_latest_posts(url):
     try:
         response = requests.get(url)
@@ -12,6 +15,7 @@ def fetch_latest_posts(url):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
         return None
+
 
 def search_posts(url, search_string):
     try:
@@ -26,12 +30,12 @@ def search_posts(url, search_string):
         print(f"An error occurred while searching: {e}")
         return None
 
+
 if __name__ == "__main__":
-    base_url = "https://klassegegenklasse.org/wp-json/wp/v2/posts"    
     # Example search string
     search_string = "Warum wir zum ungültig wählen aufrufen"
-    search_results = search_posts(base_url, search_string)
-    
+    search_results = search_posts(BASE_URL, search_string)
+
     if search_results:
         print("Search Results:")
         for post in search_results:

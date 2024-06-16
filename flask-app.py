@@ -1,21 +1,23 @@
-# flask-app.py
-from flask import Flask, request
 import json
+import validators
+
+from flask import Flask, request
+from kgk_controller import search_posts, BASE_URL
 
 # create Flask instance
 app = Flask(__name__)
 
 # a simple description of the API written in html
-description = """
+description = '''
                 <!DOCTYPE html>
                 <head>
                 <title>API Landing</title>
                 </head>
                 <body>  
                     <h3>A simple API using Flask</h3>
-                    <a href="http://localhost:5000/api?value=2">sample request</a>
+                    <a href="http://localhost:5001/api?url=https://www.klassegegenklasse.org/">sample request</a>
                 </body>
-                """
+                '''
 
 
 @app.route('/', methods=['GET'])
@@ -23,26 +25,33 @@ def hello_world():
     return description
 
 
-# requires user integer argument: value
+# requires user string argument: url
 # returns error message if wrong arguments are passed.
 @app.route('/api', methods=['GET'])
 def square():
-    if not all(k in request.args for k in (["value"])):
-        error_message = f"\
-                            Required paremeters : 'value'<br>\
-                            Supplied paremeters : {[k for k in request.args]}\
-                            "
-        return error_message
-    else:
-        # value = int(request.args['value'])
-        value = request.args.get('value', type=int)
-        return json.dumps({"Value Squared": value**2})
+    required_params = ['url']
+    if not all(k in request.args for k in required_params):
+        error_message = {
+            'Required paremeters': required_params,
+            'Supplied paremeters': f'{[k for k in request.args]}',
+        }
+        return json.dumps({'status': 'error', 'message': error_message})
+
+    url = request.args.get('url')
+    if not validators.url(url):
+        error_message = f'Please submit a valid URL: {url}.'
+        return json.dumps({'status': 'error', 'message': error_message})
+
+    if 'klassegegenklasse.org/' in url:
+        url = url.split('klassegegenklasse.org/')[-1]
+    content = search_posts(BASE_URL, url)
+    return json.dumps({'status': 'success', 'summary': content})
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # for debugging locally
     # app.run(debug=True)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)
 
     # for production
-    # app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5001)
