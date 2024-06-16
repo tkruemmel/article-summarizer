@@ -1,10 +1,9 @@
 # article-summarizer
 
-To build and run docker conatiner:
+To build and then run docker conatiner:
 
-    docker-compose up --build
-    # Same command but with `DEBUG` enabled:
-    docker-compose --log-level DEBUG up --build
+    docker build -t flaskapi:latest .
+    docker run -p 5001:5000 flaskapi:latest
 
 To install requirements:
 

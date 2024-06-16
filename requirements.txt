@@ -1,4 +1,6 @@
-flask
+Flask
+Flask-RESTful
+gunicorn
 langchain
 numpy
 pandas

@@ -1,3 +1,4 @@
+# flask-app.py
 from flask import Flask, request
 import json
 
@@ -40,7 +41,8 @@ def square():
 
 if __name__ == "__main__":
     # for debugging locally
-    # app.run(debug=True, host='0.0.0.0',port=5000)
+    # app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
     # for production
-    app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5000)
