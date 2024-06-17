@@ -1,14 +1,13 @@
-@ -1,57 +0,0 @@
 import json
 import validators
 
 from flask import Flask, request
-from kgk_controller import search_posts, BASE_URL
+from kgk_controller import search_posts, BASE_API_URL, BASE_WEB_URL
 
 # create Flask instance
-app = Flask(__name__)
+app_api = Flask(__name__)
 
-# a simple description of the API written in html
+# a simple description of the API
 description = '''
                 <!DOCTYPE html>
                 <head>
@@ -21,38 +20,50 @@ description = '''
                 '''
 
 
-@app.route('/', methods=['GET'])
+# return simple description
+@app_api.route('/', methods=['GET'])
 def hello_world():
     return description
 
 
 # requires user string argument: url
 # returns error message if wrong arguments are passed.
-@app.route('/api', methods=['GET'])
+@app_api.route('/api', methods=['GET'])
 def square():
     required_params = ['url']
+    # check for the required parameters
     if not all(k in request.args for k in required_params):
         error_message = {
             'Required paremeters': required_params,
-            'Supplied paremeters': f'{[k for k in request.args]}',
+            'Provided paremeters': [k for k in request.args],
         }
         return json.dumps({'status': 'error', 'message': error_message})
 
+    # check validity of given url
     url = request.args.get('url')
     if not validators.url(url):
-        error_message = f'Please submit a valid URL: {url}.'
+        error_message = f'Please submit a valid URL.'
         return json.dumps({'status': 'error', 'message': error_message})
 
-    if 'klassegegenklasse.org/' in url:
-        url = url.split('klassegegenklasse.org/')[-1]
-    content = search_posts(BASE_URL, url)
+    # remove trailing slash if necessary
+    if url[-1] == '/':
+        url = url[:-1]
+    # isolate slug for content retrieval
+    if BASE_WEB_URL in url:
+        url = url.split(BASE_WEB_URL)[-1]
+    content = search_posts(BASE_API_URL, url)
+
+    # check that content was retrieved
+    if content is None or len(content) < 1:
+        error_message = 'Could not retrieve content for the provided URL.'
+        return json.dumps({'status': 'error', 'message': error_message})
+
     return json.dumps({'status': 'success', 'summary': content})
 
 
 if __name__ == '__main__':
     # for debugging locally
-    # app.run(debug=True)
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app_api.run(debug=True, host='0.0.0.0', port=5001)
 
     # for production
-    # app.run(host='0.0.0.0', port=5001)
+    # app_api.run(host='0.0.0.0', port=5001)

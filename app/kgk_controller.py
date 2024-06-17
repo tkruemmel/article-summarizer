@@ -1,8 +1,8 @@
-@ -1,65 +0,0 @@
 import requests
 from html_segmenter import HTMLSegmenter
 
-BASE_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
+BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
+BASE_WEB_URL = "klassegegenklasse.org/"
 
 
 def fetch_latest_posts(url):
@@ -20,11 +20,17 @@ def fetch_latest_posts(url):
 
 def search_posts(url, search_string):
     try:
-        search_url = f"{url}?search={search_string}"
+        search_url = f"{url}?slug={search_string}"
         response = requests.get(search_url)
         response.raise_for_status()  # Check if the request was successful
 
         posts = response.json()
+        if not posts:
+            search_url = f"{url}?search={search_string.replace('-', ' ')}"
+            response = requests.get(search_url)
+            response.raise_for_status()  # Check if the request was successful
+            posts = response.json()
+
         return posts
 
     except requests.exceptions.RequestException as e:
@@ -35,7 +41,7 @@ def search_posts(url, search_string):
 if __name__ == "__main__":
     # Example search string
     search_string = "Warum wir zum ungültig wählen aufrufen"
-    search_results = search_posts(BASE_URL, search_string)
+    search_results = search_posts(BASE_API_URL, search_string)
 
     if search_results:
         print("Search Results:")
