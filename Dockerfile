@@ -1,28 +1,30 @@
-# Use an official Python runtime as the base image
+# use an official python runtime as the base image
 FROM python:3.11-slim
 
+# force stdout and stderr streams to be unbuffered
 ENV PYTHONUNBUFFERED 1
 
-# Set the working directory in the container to /app
+# set the working dir to /app
 WORKDIR /app
 
-# Copy the current directory (our Flask app) into the container at /app
+# copy app dir and requirements to working dir
 COPY ./app /app
 COPY requirements.txt /app/requirements.txt
 
-# Install Flask and other dependencies
+# install dependencies in requirements.txt
 RUN apt-get update
 RUN apt-get install sudo -y build-essential \
 python3-pip \
 python3-dev
 RUN pip install --no-cache-dir -r requirements.txt
 
+# set the location of the flask app
 ENV FLASK_APP /app/app-api.py
 
-# Make port 5001 available for the app
+# make port 5001 available for app use
 EXPOSE 5001
 
-# Run the command to start the Flask app
+# run the command to start the flask app
 CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
 
 # RUN apt-get clean
