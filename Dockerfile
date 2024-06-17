@@ -7,7 +7,8 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Copy the current directory (our Flask app) into the container at /app
-COPY . /app
+COPY ./app /app
+COPY requirements.txt /app/requirements.txt
 
 # Install Flask and other dependencies
 RUN apt-get update
@@ -16,10 +17,12 @@ python3-pip \
 python3-dev
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV FLASK_APP /flask-app.py
+ENV FLASK_APP /app/app-api.py
 
 # Make port 5001 available for the app
 EXPOSE 5001
 
 # Run the command to start the Flask app
 CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
+
+# RUN apt-get clean
