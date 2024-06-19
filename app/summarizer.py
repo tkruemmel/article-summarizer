@@ -1,60 +1,88 @@
-import requests
-from html_segmenter import HTMLSegmenter
-from summarizer import get_text_chunks_langchain, summarize
+import json
+from bs4 import BeautifulSoup
+import csv
 
-BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
-BASE_WEB_URL = "klassegegenklasse.org/"
-
-
-def fetch_latest_posts(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-
-        posts = response.json()
-        return posts
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-        return None
+# from kgk_controller import fetch_latest_posts, search_posts
+# from html_segmenter import HTMLSegmenter
+from langchain_community.document_loaders import JSONLoader, TextLoader
+from langchain_community.llms import Ollama
+from langchain.chains.summarize import load_summarize_chain
+from langchain.prompts import PromptTemplate
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.schema.document import Document
 
 
-def search_posts(url, search_string):
-    try:
-        search_url = f"{url}?slug={search_string}"
-        response = requests.get(search_url)
-        response.raise_for_status()  # Check if the request was successful
-
-        posts = response.json()
-        if not posts:
-            search_url = f"{url}?search={search_string.replace('-', ' ')}"
-            response = requests.get(search_url)
-            response.raise_for_status()  # Check if the request was successful
-            posts = response.json()
-
-        return posts
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred while searching: {e}")
-        return None
+# # Isolating one post to experiment with
+# def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
+#     posts = fetch_latest_posts(url)
+#     post = posts[3]["content"]["rendered"]
+#     stripped_post = BeautifulSoup(post, features="html.parser").get_text()
+#     with open("post.txt","w+") as file:
+#         file.writelines(stripped_post)
+#     return None
 
 
-if __name__ == "__main__":
-    search_string = "Warum wir zum ungültig wählen aufrufen"
-    search_results = search_posts(BASE_API_URL, search_string)
+# def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
 
-    if search_results:
-        print("Search Results:")
-        for post in search_results:
-            if not post['title']['rendered'].lower() == search_string.lower():
-                continue
-            segmenter = HTMLSegmenter(post['content']['rendered'])
-            segments = segmenter.segment()
-            full_text = ""
-            for segment in segments:
-                full_text += segment["content"]
-            langchain_doc = get_text_chunks_langchain(full_text)
-            summarize(langchain_doc)
 
-    else:
-        print("No posts found for the given search string.")
+# def get_json(): # json to lc Document?
+#     posts = fetch_latest_posts("https://klassegegenklasse.org/wp-json/wp/v2/posts")
+#     with open("posts.json", "w") as outfile:
+#         json.dump(posts, outfile)
+#     return None
+
+
+def load_data(doc):
+    loader = TextLoader(doc)
+    data = loader.load()
+    return data
+
+
+# def load_data():
+# loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
+# data = loader.load()
+# return None
+
+
+def save_summary(summary):
+    with open("summary.txt", "w+") as file:
+        file.writelines(summary)
+
+
+def get_text_chunks_langchain(text):
+    text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+    docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
+    return docs
+
+
+def summarize(loaded_text):
+    # Instantiate LLM
+    llm = Ollama(model="phi3")
+
+    # Define prompt
+    template = """Schreiben Sie eine Zusammenfassung des folgenden Textes:
+
+    {text}
+
+    ZUSAMENFASSUNG:"""
+    prompt_template = PromptTemplate(
+        template=template, input_variables=["text"]
+    )
+
+    # Define chain
+    chain = load_summarize_chain(
+        llm, chain_type="stuff", prompt=prompt_template, verbose=True
+    )  # to see detailed prompt
+
+    # loaded_text = load_data(doc)
+    summary = chain.invoke(loaded_text)
+    output = summary["output_text"]
+    print(output)
+    save_summary(output)
+    return output
+
+
+# get_test_post()
+# loaded_data = load_data("post.txt")
+# print(loaded_data)
+# summarize("post.txt")

@@ -29,7 +29,7 @@ def search_posts(url, search_string):
         if not posts:
             search_url = f"{url}?search={search_string.replace('-', ' ')}"
             response = requests.get(search_url)
-            response.raise_for_status()  # Check if the request was successful
+            response.raise_for_status()
             posts = response.json()
 
         return posts
