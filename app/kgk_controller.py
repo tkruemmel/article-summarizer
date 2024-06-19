@@ -1,5 +1,6 @@
 import requests
 from html_segmenter import HTMLSegmenter
+from summarizer import get_text_chunks_langchain, summarize
 
 BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
 BASE_WEB_URL = "klassegegenklasse.org/"
@@ -8,7 +9,7 @@ BASE_WEB_URL = "klassegegenklasse.org/"
 def fetch_latest_posts(url):
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Check if the request was successful
+        response.raise_for_status()
 
         posts = response.json()
         return posts
@@ -22,7 +23,7 @@ def search_posts(url, search_string):
     try:
         search_url = f"{url}?slug={search_string}"
         response = requests.get(search_url)
-        response.raise_for_status()  # Check if the request was successful
+        response.raise_for_status()
 
         posts = response.json()
         if not posts:
@@ -46,27 +47,15 @@ if __name__ == "__main__":
     if search_results:
         print("Search Results:")
         for post in search_results:
-            # print(f"Title: {post['title']['rendered']}")
-            # print(f"Date: {post['date']}")
-            # print(f"Link: {post['link']}")
-            # print(f"Content: {post['content']['rendered']}")
-            # print('-' * 40)
             if not post['title']['rendered'].lower() == search_string.lower():
                 continue
             segmenter = HTMLSegmenter(post['content']['rendered'])
             segments = segmenter.segment()
+            full_text = ""
             for segment in segments:
-                print(segment['content'])
+                full_text += segment["content"]
+            langchain_doc = get_text_chunks_langchain(full_text)
+            summarize(langchain_doc)
+
     else:
         print("No posts found for the given search string.")
-
-    # if search_results:
-    #     print("Search Results:")
-    #     for post in search_results:
-    #         print(f"Title: {post['title']['rendered']}")
-    #         print(f"Date: {post['date']}")
-    #         print(f"Link: {post['link']}")
-    #         print(f"Content: {post['content']['rendered']}")
-    #         print('-' * 40)
-    # else:
-    #     print("No posts found for the given search string.")
