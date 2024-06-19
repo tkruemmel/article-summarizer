@@ -8,7 +8,7 @@ from kgk_controller import search_posts, BASE_API_URL, BASE_WEB_URL
 app_api = Flask(__name__)
 
 # a simple description of the API
-description = '''
+description_html = '''
                 <!DOCTYPE html>
                 <head>
                 <title>API Landing</title>
@@ -22,14 +22,14 @@ description = '''
 
 # return simple description
 @app_api.route('/', methods=['GET'])
-def hello_world():
-    return description
+def description():
+    return description_html
 
 
 # requires user string argument: url
 # returns error message if wrong arguments are passed.
 @app_api.route('/api', methods=['GET'])
-def square():
+def get_content_from_url():
     required_params = ['url']
     # check for the required parameters
     if not all(k in request.args for k in required_params):
