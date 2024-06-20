@@ -19,7 +19,7 @@ python3-dev
 RUN pip install --no-cache-dir -r requirements.txt
 
 # set the location of the flask app
-ENV FLASK_APP /app/app-api.py
+ENV FLASK_APP /app/app_api.py
 
 # make port 5001 available for app use
 EXPOSE 5001

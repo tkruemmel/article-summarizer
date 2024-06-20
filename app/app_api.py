@@ -1,23 +1,23 @@
 import json
-import validators
 
+from validators import url as validate_url
 from flask import Flask, request
-from kgk_controller import search_posts, BASE_API_URL, BASE_WEB_URL
+from kgk_controller import search_posts, BASE_API_URL
 
 # create Flask instance
 app_api = Flask(__name__)
 
 # a simple description of the API
 description_html = '''
-                <!DOCTYPE html>
-                <head>
-                <title>API Landing</title>
-                </head>
-                <body>  
-                    <h3>A simple API using Flask</h3>
-                    <a href="http://localhost:5001/api?url=https://www.klassegegenklasse.org/">sample request</a>
-                </body>
-                '''
+    <!DOCTYPE html>
+    <head>
+        <title>API Landing</title>
+    </head>
+    <body>  
+        <h3>A simple API using Flask</h3>
+        <a href="http://localhost:5001/api?url=https://www.klassegegenklasse.org/">sample request</a>
+    </body>
+    '''
 
 
 # return simple description
@@ -41,16 +41,10 @@ def get_content_from_url():
 
     # check validity of given url
     url = request.args.get('url')
-    if not validators.url(url):
+    if not validate_url(url):
         error_message = f'Please submit a valid URL.'
         return json.dumps({'status': 'error', 'message': error_message})
 
-    # remove trailing slash if necessary
-    if url[-1] == '/':
-        url = url[:-1]
-    # isolate slug for content retrieval
-    if BASE_WEB_URL in url:
-        url = url.split(BASE_WEB_URL)[-1]
     content = search_posts(BASE_API_URL, url)
 
     # check that content was retrieved

@@ -20,6 +20,13 @@ def fetch_latest_posts(url):
 
 
 def search_posts(url, search_string):
+    # remove trailing slash if necessary
+    if search_string[-1] == '/':
+        search_string = search_string[:-1]
+    # isolate slug for content retrieval
+    if BASE_WEB_URL in search_string:
+        search_string = search_string.split(BASE_WEB_URL)[-1]
+
     try:
         search_url = f"{url}?slug={search_string}"
         response = requests.get(search_url)
