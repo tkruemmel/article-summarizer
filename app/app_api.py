@@ -2,10 +2,13 @@ import json
 
 from validators import url as validate_url
 from flask import Flask, request
-from kgk_controller import search_posts, BASE_API_URL
+from kgk_controller import find_specific_post
+from summarizer import summarize
+
 
 # create Flask instance
 app_api = Flask(__name__)
+
 
 # a simple description of the API
 description_html = '''
@@ -31,28 +34,39 @@ def description():
 @app_api.route('/api', methods=['GET'])
 def get_content_from_url():
     required_params = ['url']
-    # check for the required parameters
-    if not all(k in request.args for k in required_params):
-        error_message = {
-            'Required paremeters': required_params,
-            'Provided paremeters': [k for k in request.args],
+
+    try:
+        # check for the required parameters
+        assert all(k in request.args for k in required_params), str(
+            {
+                'Required paremeters': required_params,
+                'Provided paremeters': [k for k in request.args],
+            }
+        )
+        url = request.args.get('url')
+        # check validity of given url
+        assert validate_url(url), 'Please submit a valid URL.'
+
+        content = find_specific_post(url)
+        assert (  # check that content was retrieved properly
+            content is not None
+        ), 'Could not retrieve content for the provided URL.'
+
+        # summary = summarize(content.get('content', {}).get('rendered'))
+        # assert (  # check that summary was generated
+        #     summary is not None
+        # ), "Could not generate summary from retrieved content."
+
+    except AssertionError as err:
+        return json.dumps({'status': 'error', 'message': str(err)})
+
+    return json.dumps(
+        {
+            'status': 'success',
+            'slug': content.get('slug', ''),
+            'summary': content.get('content', {}).get('rendered'),
         }
-        return json.dumps({'status': 'error', 'message': error_message})
-
-    # check validity of given url
-    url = request.args.get('url')
-    if not validate_url(url):
-        error_message = f'Please submit a valid URL.'
-        return json.dumps({'status': 'error', 'message': error_message})
-
-    content = search_posts(BASE_API_URL, url)
-
-    # check that content was retrieved
-    if content is None or len(content) < 1:
-        error_message = 'Could not retrieve content for the provided URL.'
-        return json.dumps({'status': 'error', 'message': error_message})
-
-    return json.dumps({'status': 'success', 'summary': content})
+    )
 
 
 if __name__ == '__main__':
