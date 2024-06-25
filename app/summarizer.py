@@ -14,16 +14,18 @@ def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
     posts = fetch_latest_posts(url)
     post = posts[3]["content"]["rendered"]
     stripped_post = BeautifulSoup(post, features="html.parser").get_text()
-    with open("post.txt","w+") as file:
+    with open("post.txt", "w+") as file:
         file.writelines(stripped_post)
     return None
 
 
-#def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
+# def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
 
 
-def get_json(): # json to lc Document?
-    posts = fetch_latest_posts("https://klassegegenklasse.org/wp-json/wp/v2/posts")
+def get_json():  # json to lc Document?
+    posts = fetch_latest_posts(
+        "https://klassegegenklasse.org/wp-json/wp/v2/posts"
+    )
     with open("posts.json", "w") as outfile:
         json.dump(posts, outfile)
     return None
@@ -35,14 +37,14 @@ def load_data(doc):
     return data
 
 
-#def load_data():
-    #loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
-    #data = loader.load()
-    #return None
+# def load_data():
+# loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
+# data = loader.load()
+# return None
 
 
 def save_summary(summary):
-    with open("summary.txt","w+") as file:
+    with open("summary.txt", "w+") as file:
         file.writelines(summary)
 
 
@@ -56,14 +58,14 @@ def summarize(doc):
     {text}
 
     ZUSSAMENFASSUNG:"""
-    prompt_template = PromptTemplate(template=template,
-                                     input_variables=["text"])
+    prompt_template = PromptTemplate(
+        template=template, input_variables=["text"]
+    )
 
     # Define chain
-    chain = load_summarize_chain(llm,
-                                 chain_type="stuff",
-                                 prompt=prompt_template,
-                                 verbose=True)  # to see detailed prompt
+    chain = load_summarize_chain(
+        llm, chain_type="stuff", prompt=prompt_template, verbose=True
+    )  # to see detailed prompt
 
     loaded_text = load_data(doc)
     summary = chain.invoke(loaded_text)
@@ -73,7 +75,7 @@ def summarize(doc):
     return output
 
 
-#get_test_post()
-#loaded_data = load_data("post.txt")
-#print(loaded_data)
+# get_test_post()
+# loaded_data = load_data("post.txt")
+# print(loaded_data)
 summarize("post.txt")
