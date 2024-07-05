@@ -12,6 +12,12 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.document import Document
 
 
+llm = Ollama(
+    model="phi:latest",
+    base_url="http://ollama-container:11434",
+    verbose=True,
+)
+
 # # Isolating one post to experiment with
 # def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
 #     posts = fetch_latest_posts(url)
@@ -57,7 +63,7 @@ def get_text_chunks_langchain(text):
 
 def summarize(loaded_text):
     # Instantiate LLM
-    llm = Ollama(model="phi3")
+    # llm = Ollama(model="phi3")
 
     # Define prompt
     template = """Schreiben Sie eine Zusammenfassung des folgenden Textes:

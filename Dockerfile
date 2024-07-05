@@ -10,6 +10,8 @@ WORKDIR /app
 # copy app dir and requirements to working dir
 COPY ./app /app
 COPY requirements.txt /app/requirements.txt
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
 # install dependencies in requirements.txt
 RUN apt-get update
@@ -23,8 +25,8 @@ ENV FLASK_APP /app/app_api.py
 
 # make port 5001 available for app use
 EXPOSE 5001
+EXPOSE 8501 
 
-# run the command to start the flask app
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT [ "./start.sh" ]
 
 # RUN apt-get clean
