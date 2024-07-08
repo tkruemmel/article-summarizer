@@ -24,9 +24,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV FLASK_APP /app/app_api.py
 
 # make port 5001 available for app use
-EXPOSE 5001
+# make port 5000 available for app use
+EXPOSE 5000
 EXPOSE 8501 
+# ENTRYPOINT [ "streamlit", "run", "app/summarizer.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
 ENTRYPOINT [ "./start.sh" ]
 
+# run the command to start the flask app
+# CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0" ]
 # RUN apt-get clean

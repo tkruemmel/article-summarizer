@@ -18,7 +18,7 @@ description_html = '''
     </head>
     <body>  
         <h3>A simple API using Flask</h3>
-        <a href="http://localhost:5001/api?url=https://www.klassegegenklasse.org/">sample request</a>
+        <a href="http://localhost:5000/api?url=https://www.klassegegenklasse.org/">sample request</a>
     </body>
     '''
 
@@ -52,10 +52,10 @@ def get_content_from_url():
             content is not None
         ), 'Could not retrieve content for the provided URL.'
 
-        # summary = summarize(content.get('content', {}).get('rendered'))
-        # assert (  # check that summary was generated
-        #     summary is not None
-        # ), "Could not generate summary from retrieved content."
+        summary = summarize(content.get('content', {}).get('rendered'))
+        assert (  # check that summary was generated
+            summary is not None
+        ), "Could not generate summary from retrieved content."
 
     except AssertionError as err:
         return json.dumps({'status': 'error', 'message': str(err)})
@@ -64,14 +64,15 @@ def get_content_from_url():
         {
             'status': 'success',
             'slug': content.get('slug', ''),
-            'summary': content.get('content', {}).get('rendered'),
+            'real_summary': summary,
+            # 'summary': content.get('content', {}).get('rendered'),
         }
     )
 
 
 if __name__ == '__main__':
     # for debugging locally
-    app_api.run(debug=True, host='0.0.0.0', port=5001)
+    app_api.run(debug=True, host='0.0.0.0', port=5000)
 
     # for production
-    # app_api.run(host='0.0.0.0', port=5001)
+    # app_api.run(host='0.0.0.0', port=5000)

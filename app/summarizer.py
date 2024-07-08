@@ -81,7 +81,7 @@ def summarize(loaded_text):
     )  # to see detailed prompt
 
     # loaded_text = load_data(doc)
-    summary = chain.invoke(loaded_text)
+    summary = chain.invoke(get_text_chunks_langchain(loaded_text))
     output = summary["output_text"]
     print(output)
     save_summary(output)
