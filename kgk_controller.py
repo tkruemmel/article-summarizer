@@ -38,7 +38,7 @@ if __name__ == "__main__":
         for i, post in enumerate(search_results):
             print(f"{i+1}. {post['title']['rendered']}")
 
-        choice = int(input("Enter the number of the post you want to choose: ")) - 1
+        choice = int(input("These are the search results. Enter the number of the article you want to choose: ")) - 1
 
         if 0 <= choice < len(search_results):
             chosen_post = search_results[choice]
