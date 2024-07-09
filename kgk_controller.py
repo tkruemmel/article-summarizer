@@ -1,6 +1,7 @@
 import requests
 from html_segmenter import HTMLSegmenter
 from summarizer import get_text_chunks_langchain, summarize
+import sys
 
 def fetch_latest_posts(url):
     try:
@@ -28,16 +29,20 @@ def search_posts(url, search_string):
         return None
 
 if __name__ == "__main__":
-    base_url = "https://klassegegenklasse.org/wp-json/wp/v2/posts"    
-    search_string = "Warum wir zum ungültig wählen aufrufen"
+    search_string = input("Enter the name of an article you want to summarize: ")
+    base_url = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
     search_results = search_posts(base_url, search_string)
     
     if search_results:
         print("Search Results:")
-        for post in search_results:
-            if not post['title']['rendered'].lower() == search_string.lower():
-                continue
-            segmenter = HTMLSegmenter(post['content']['rendered'])
+        for i, post in enumerate(search_results):
+            print(f"{i+1}. {post['title']['rendered']}")
+
+        choice = int(input("Enter the number of the post you want to choose: ")) - 1
+
+        if 0 <= choice < len(search_results):
+            chosen_post = search_results[choice]
+            segmenter = HTMLSegmenter(chosen_post['content']['rendered'])
             segments = segmenter.segment()
             full_text = ""
             for segment in segments:
