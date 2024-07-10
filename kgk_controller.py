@@ -29,7 +29,7 @@ def search_posts(url, search_string):
         return None
 
 if __name__ == "__main__":
-    search_string = input("Enter the name of an article you want to summarize: ")
+    search_string = input("Hi there! This is an article summariser for klassegegenklasse.org. I can summarise articles that have a length of approximately 30mins or shorter, which is indicated on the website. Please enter a search term to find an article that I may summarise for you. Hit enter to confirm: ")
     base_url = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
     search_results = search_posts(base_url, search_string)
     
