@@ -9,6 +9,12 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.document import Document
+from langchain_community.llms import Anyscale
+
+import os
+
+os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
+os.environ["ANYSCALE_API_KEY"] = "DUMMY"
 
 
 # # Isolating one post to experiment with
@@ -55,7 +61,10 @@ def get_text_chunks_langchain(text):
 
 def summarize(loaded_text):
     # Instantiate LLM
-    llm = Ollama(model="phi3")
+    #llm = Ollama(model="phi3")
+    
+    # Load the model from Anyscale
+    llm = Anyscale(model_name="meta-llama/Llama-3-70b-chat-hf")
 
     # Define prompt
     template = """Schreiben Sie eine Zusammenfassung des folgenden Textes:
