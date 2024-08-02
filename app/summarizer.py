@@ -27,7 +27,7 @@ os.environ["ANYSCALE_API_KEY"] = "DUMMY"
 #     return None
 
 
-#def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
+# def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
 
 
 # def get_json(): # json to lc Document?
@@ -43,14 +43,14 @@ def load_data(doc):
     return data
 
 
-#def load_data():
-    #loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
-    #data = loader.load()
-    #return None
+# def load_data():
+# loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
+# data = loader.load()
+# return None
 
 
 def save_summary(summary):
-    with open("summary.txt","w+") as file:
+    with open("summary.txt", "w+") as file:
         file.writelines(summary)
 
 def get_text_chunks_langchain(text):
@@ -76,10 +76,9 @@ def summarize(loaded_text):
                                      input_variables=["text"])
 
     # Define chain
-    chain = load_summarize_chain(llm,
-                                 chain_type="stuff",
-                                 prompt=prompt_template,
-                                 verbose=True)  # to see detailed prompt
+    chain = load_summarize_chain(
+        llm, chain_type="stuff", prompt=prompt_template, verbose=True
+    )  # to see detailed prompt
 
     #loaded_text = load_data(doc)
     summary = chain.invoke(loaded_text)
@@ -93,3 +92,4 @@ def summarize(loaded_text):
 #loaded_data = load_data("post.txt")
 #print(loaded_data)
 #summarize("post.txt")
+
