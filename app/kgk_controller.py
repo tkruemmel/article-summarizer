@@ -39,6 +39,14 @@ def search_posts(url, search_string):
         print(f"An error occurred while searching: {e}")
         return None
 
+def create_full_text(text):
+    segmenter = HTMLSegmenter(text)
+    segments = segmenter.segment()
+    full_text = ""
+    for segment in segments:
+        full_text += segment["content"]
+    return full_text
+
 
 if __name__ == "__main__":
     search_string = input("Hi there! This is an article summariser for klassegegenklasse.org. I can summarise articles that have a length of approximately 30mins or shorter, which is indicated on the website. Please enter a search term to find an article that I may summarise for you. Hit enter to confirm: ")
@@ -54,13 +62,9 @@ if __name__ == "__main__":
 
         if 0 <= choice < len(search_results):
             chosen_post = search_results[choice]
-            segmenter = HTMLSegmenter(chosen_post['content']['rendered'])
-            segments = segmenter.segment()
-            full_text = ""
-            for segment in segments:
-                full_text += segment["content"]
+            full_text = create_full_text(chosen_post['content']['rendered'])
             langchain_doc = get_text_chunks_langchain(full_text)
-            summarize(langchain_doc)
+            summarize(langchain_doc, chosen_post['title']['rendered'], "results.csv")
             
     else:
         print("No posts found for the given search string.")
