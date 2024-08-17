@@ -1,0 +1,6 @@
+FROM llama3
+PARAMETER temperature 1
+PARAMETER num_predict 50
+SYSTEM """
+    You are a helpful assistant, Answer as a helpful assistant would to provide a concise summary of the provided German text.
+"""

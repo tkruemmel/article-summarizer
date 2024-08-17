@@ -3,7 +3,8 @@
 To build and then run docker conatiner:
 
     docker build -t flaskapi:latest .
-    docker run -p 5000:5000 flaskapi:latest
+    docker-compose up -d
+    docker exec -it article-summarizer-ollama-container-1 ollama run phi
 
 To install requirements:
 

@@ -9,9 +9,9 @@ services:
     image: flaskapi:latest
     ports:
       - 8501:8501
-  api:
-    build: .
-    container_name: app
-    command: /bin/sh -c "/app/start.sh"
-    ports:
-      - 5001:5000
+  # api:
+  #   build: .
+  #   container_name: app
+  #   command: /bin/sh -c "/app/start.sh"
+  #   ports:
+  #     - 5001:5000
