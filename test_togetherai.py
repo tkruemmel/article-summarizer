@@ -13,7 +13,7 @@ from together import Together
 # deepeval login --confident-api-key key
 # deepeval test run test_togetherai.py
 
-TOGETHER_API_KEY="key"
+TOGETHER_API_KEY="KEY"
 client = Together(api_key=TOGETHER_API_KEY)
 
 
@@ -108,5 +108,6 @@ for test_case in dataset.test_cases:
     print(metric.score)
     print(metric.reason)
 
-with open("evaluation_results.json", 'w') as file:
-    json.dump(evaluation_results, file, indent=4)
+
+with open("evaluation_results.json", "w") as file:
+    file.write(json.dumps(evaluation_results, indent=4))
