@@ -1,34 +1,27 @@
 import json
 from bs4 import BeautifulSoup
 import csv
-from kgk_controller import fetch_latest_posts, search_posts
-from html_segmenter import HTMLSegmenter
+#from kgk_controller import fetch_latest_posts, search_posts
+#from html_segmenter import HTMLSegmenter
 from langchain_community.document_loaders import JSONLoader, TextLoader
 from langchain_community.llms import Ollama
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.schema.document import Document
+# Querying code and language models with Together AI
 
+from langchain_together import Together
 
-# Isolating one post to experiment with
-def get_test_post(url="https://klassegegenklasse.org/wp-json/wp/v2/posts"):
-    posts = fetch_latest_posts(url)
-    post = posts[3]["content"]["rendered"]
-    stripped_post = BeautifulSoup(post, features="html.parser").get_text()
-    with open("post.txt", "w+") as file:
-        file.writelines(stripped_post)
-    return None
+from custom_max_token_llm import CustomMaxTokenLLM
 
+import os
 
-# def get_csv(): # ??? need to figure out how to load KGK data into LangChain Documents
+os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
+os.environ["ANYSCALE_API_KEY"] = "DUMMY"
 
+TOGETHER_API_KEY = "KEY GOES HERE"
 
-def get_json():  # json to lc Document?
-    posts = fetch_latest_posts(
-        "https://klassegegenklasse.org/wp-json/wp/v2/posts"
-    )
-    with open("posts.json", "w") as outfile:
-        json.dump(posts, outfile)
-    return None
 
 
 def load_data(doc):
@@ -37,45 +30,67 @@ def load_data(doc):
     return data
 
 
-# def load_data():
-# loader = JSONLoader(file_path="posts.json", jq_schema=".", content_key="content")
-# data = loader.load()
-# return None
-
 
 def save_summary(summary):
     with open("summary.txt", "w+") as file:
         file.writelines(summary)
 
+def get_text_chunks_langchain(text):
+    text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+    docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
+    return docs
 
-def summarize(doc):
-    # Instantiate LLM
-    llm = Ollama(model="phi3")
+def summarize(loaded_text, article_name, csv_file_path):
+    max_tokens = 864
 
-    # Define prompt
-    template = """Schreiben Sie eine Zusammenfassung des folgenden Textes:
-
-    {text}
-
-    ZUSSAMENFASSUNG:"""
-    prompt_template = PromptTemplate(
-        template=template, input_variables=["text"]
+    # Initialize the base language model
+    base_llm = Together(
+        model="mistralai/Mixtral-8x22B-Instruct-v0.1",
+        together_api_key=TOGETHER_API_KEY,
+        max_tokens=3500  # Set the max_tokens value here
     )
+    
+    custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=max_tokens)
 
-    # Define chain
-    chain = load_summarize_chain(
-        llm, chain_type="stuff", prompt=prompt_template, verbose=True
-    )  # to see detailed prompt
+    # Define multiple prompts
+    prompts = [
+        """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
 
-    loaded_text = load_data(doc)
-    summary = chain.invoke(loaded_text)
-    output = summary["output_text"]
-    print(output)
-    save_summary(output)
-    return output
+        {text}
 
+        ZUSAMMENFASSUNG:""",
+        
+        """Erstellen Sie eine prägnante und umfassende Zusammenfassung des bereitgestellten Artikels mit einer maximalen Länge von 864 Tokens. Halten Sie sich an folgende Richtlinien:
 
-# get_test_post()
-# loaded_data = load_data("post.txt")
-# print(loaded_data)
-summarize("post.txt")
+    Erstellen Sie eine Zusammenfassung, die detailliert, gründlich, ausführlich und komplex ist und dabei Klarheit und Prägnanz behält.
+
+    Integrieren Sie Hauptgedanken und wesentliche Informationen, entfernen Sie überflüssige Inhalte und konzentrieren Sie sich auf zentrale Aspekte.
+
+    Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung externer Informationen:
+
+        {text}
+
+        ZUSAMMENFASSUNG:""",
+        
+        """Schreiben Sie eine Zusammenfassung des folgenden Textes mit einer maximalen Länge von 864 Tokens. Schreiben Sie die Zusammenfassung so, dass sie ein Kleinkind verstehen würde:
+
+        {text}
+
+        ZUSAMMENFASSUNG:"""
+    ]
+
+    # Process each prompt and store the output in the appropriate column
+    for i, prompt in enumerate(prompts):
+        prompt_template = PromptTemplate(template=prompt, input_variables=["text"])
+        
+        # Define the summarization chain for the current prompt
+        chain = load_summarize_chain(
+            custom_llm, chain_type="stuff", prompt=prompt_template, verbose=True
+        )
+        
+        # Generate the summary for the current prompt
+        summary = chain.invoke(loaded_text)
+        output = summary["output_text"]
+        print(f"Prompt {i+1} Summary: {output}")
+        
+
