@@ -5,13 +5,13 @@ import torch
 import numpy as np
 
 # Load SBERT model
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+model = SentenceTransformer('T-Systems-onsite/cross-en-de-roberta-sentence-transformer')
 
 # Load the CSV file
 csv_file = 'KGK Zusammenfassungen.csv'
 df = pd.read_csv(csv_file)
 
-tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/paraphrase-MiniLM-L6-v2')
+tokenizer = AutoTokenizer.from_pretrained('deepset/gbert-base')
 
 def mean_pooling(model_output, attention_mask):
     token_embeddings = model_output[0]  # First element of model_output contains all token embeddings
@@ -72,21 +72,6 @@ def sbert_similarity(str1, str2):
         return similarity.item()
     else:
         return np.nan  # Return NaN if either input is not a string
-
-# Preprocess Llama 3 columns to truncate them to 864 tokens
-df['Llama 3 Z1'] = df['Llama 3 Z1'].apply(lambda x: truncate_to_token_limit(x))
-df['Llama3 Z2'] = df['Llama3 Z2'].apply(lambda x: truncate_to_token_limit(x))
-df['Llama3 Z3'] = df['Llama3 Z3'].apply(lambda x: truncate_to_token_limit(x))
-
-# Preprocess Qwen 2 columns to truncate them to 864 tokens
-df['Qwen2 Z1'] = df['Qwen2 Z1'].apply(lambda x: truncate_to_token_limit(x))
-df['Qwen2 Z2'] = df['Qwen2 Z2'].apply(lambda x: truncate_to_token_limit(x))
-df['Qwen2 Z3'] = df['Qwen2 Z3'].apply(lambda x: truncate_to_token_limit(x))
-
-# Preprocess Mistral columns to truncate them to 864 tokens
-df['Mistral Z1'] = df['Mistral Z1'].apply(lambda x: truncate_to_token_limit(x))
-df['Mistral Z2'] = df['Mistral Z2'].apply(lambda x: truncate_to_token_limit(x))
-df['Mistral Z3'] = df['Mistral Z3'].apply(lambda x: truncate_to_token_limit(x))
 
 # Calculate similarities and store them in new columns for Llama 3
 df['Similarity Llama3 Z1'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama 3 Z1']), axis=1)
