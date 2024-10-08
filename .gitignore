@@ -3,4 +3,5 @@
 *.pyo
 *.log
 __pycache__/
-/data
+data/
+venv/
