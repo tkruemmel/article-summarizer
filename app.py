@@ -1,8 +1,7 @@
 import streamlit as st
 from langchain_community.llms import Ollama
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from validators import url as validate_url
-from kgk_controller import find_specific_post
+from app.kgk_controller import find_specific_post
 from lxml import html
 
 
@@ -22,9 +21,6 @@ def sendPrompt(prompt):
     response = llm.invoke(prompt)
     return response
 
-
-# raise Exception("THIS IS NIKOLE:", prompt, validate_url(prompt))
-# Exception: ('THIS IS NIKOLE:', 'whats your favorite color?', ValidationError(func=url, args={'value': 'whats your favorite color?'}))
 
 st.title("Article Summarizer")
 if "messages" not in st.session_state.keys():

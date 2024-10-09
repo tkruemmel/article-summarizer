@@ -10,23 +10,20 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.document import Document
-from custom_max_token_llm import CustomMaxTokenLLM
+
+# Querying code and language models with Together AI
 
 from langchain_together import Together
 
-llm = Ollama(
-    model="phi:latest",
-    base_url="http://ollama-container:11434",
-    verbose=True,
-)
-
+from custom_max_token_llm import CustomMaxTokenLLM
 
 import os
 
-os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
-os.environ["ANYSCALE_API_KEY"] = "DUMMY"
+# ANYSCALE_API_BASE = os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
+# ANYSCALE_API_KEY = os.environ.get("ANYSCALE_API_KEY", "KEY")
+TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
 
-TOGETHER_API_KEY = "KEY GOES HERE"
+print("welllllll... ", TOGETHER_API_KEY)
 
 
 def load_data(doc):
@@ -46,7 +43,7 @@ def get_text_chunks_langchain(text):
     return docs
 
 
-def summarize(loaded_text, article_name, csv_file_path):
+def summarize(loaded_text):
     max_tokens = 864
 
     # Initialize the base language model
