@@ -5,7 +5,7 @@ from summarizer import get_text_chunks_langchain, summarize
 import sys
 
 BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
-BASE_WEB_URL = "www.klassegegenklasse.org/"
+BASE_WEB_URL = "klassegegenklasse.org/"
 
 
 def create_full_text(text):

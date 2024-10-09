@@ -1,14 +1,13 @@
 FROM python:3.11-slim
 
-# Create app directory
+# create app directory
 WORKDIR /app
 
-# Copy the files
+# copy required files
 COPY requirements.txt ./
-COPY main.py ./
 COPY /app ./
 
-#install the dependecies
+# install dependecies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 

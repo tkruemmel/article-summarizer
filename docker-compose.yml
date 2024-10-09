@@ -1,4 +1,8 @@
 services:
+  environment:
+    - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+    - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
+    - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
   ollama-container:
     image: ollama/ollama
     volumes:
@@ -9,9 +13,3 @@ services:
     image: flaskapi:latest
     ports:
       - 8501:8501
-  # api:
-  #   build: .
-  #   container_name: app
-  #   command: /bin/sh -c "/app/start.sh"
-  #   ports:
-  #     - 5001:5000

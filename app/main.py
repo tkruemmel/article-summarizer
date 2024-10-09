@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain_community.llms import Ollama
 from validators import url as validate_url
-from app.kgk_controller import find_specific_post
+from kgk_controller import find_specific_post
 from lxml import html
 
 
