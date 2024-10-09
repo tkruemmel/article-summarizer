@@ -1,10 +1,10 @@
 services:
-  environment:
-    - TOGETHER_API_KEY=${TOGETHER_API_KEY}
-    - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
-    - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
   ollama-container:
     image: ollama/ollama
+    environment:
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+      - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
+      - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
     volumes:
       - ./data/ollama:/root/.ollama
     ports:

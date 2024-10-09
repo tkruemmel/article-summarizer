@@ -7,3 +7,5 @@ data/
 venv/
 myvenv/
 .env
+app/summary.txt
+app/post.txt

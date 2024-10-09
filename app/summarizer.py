@@ -1,29 +1,18 @@
-import json
-from bs4 import BeautifulSoup
-import csv
+import os
 
-# from kgk_controller import fetch_latest_posts, search_posts
-# from html_segmenter import HTMLSegmenter
-from langchain_community.document_loaders import JSONLoader, TextLoader
-from langchain_community.llms import Ollama
+from langchain_community.document_loaders import TextLoader
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.document import Document
-
-# Querying code and language models with Together AI
-
 from langchain_together import Together
 
 from custom_max_token_llm import CustomMaxTokenLLM
 
-import os
 
 # ANYSCALE_API_BASE = os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
 # ANYSCALE_API_KEY = os.environ.get("ANYSCALE_API_KEY", "KEY")
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
-
-print("welllllll... ", TOGETHER_API_KEY)
 
 
 def load_data(doc):
@@ -56,7 +45,7 @@ def summarize(loaded_text):
     custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=max_tokens)
 
     # Define multiple prompts
-    prompts = [
+    prompts = [  # TODO: move to its own file
         """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
 
         {text}
