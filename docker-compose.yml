@@ -1,15 +1,19 @@
 services:
   ollama-container:
+    build: .
     image: ollama/ollama
-    environment:
-      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
-      - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
-      - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
     volumes:
       - ./data/ollama:/root/.ollama
     ports:
       - 11434:11434
   streamlit-app:
+    build: .
     image: flaskapi:latest
+    environment:
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+      - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
+      - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
     ports:
       - 8501:8501
+
+# TODO: separate out ollama part so it can be run separately

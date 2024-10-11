@@ -52,7 +52,9 @@ def get_content_from_url():
             content is not None
         ), 'Could not retrieve content for the provided URL.'
 
-        summary = summarize(content.get('content', {}).get('rendered'))
+        summary = summarize(
+            content.get('content', {}).get('rendered'), promp_index=0
+        )  # TODO: change prompt choice?
         assert (  # check that summary was generated
             summary is not None
         ), "Could not generate summary from retrieved content."

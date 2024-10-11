@@ -139,7 +139,7 @@ if __name__ == "__main__":
             chosen_post = search_results[choice]
             full_text = create_full_text(chosen_post['content']['rendered'])
             langchain_doc = get_text_chunks_langchain(full_text)
-            summarize(langchain_doc)
+            _ = summarize(langchain_doc)
 
     else:
         print("No posts found for the given search string.")

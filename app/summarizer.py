@@ -1,3 +1,4 @@
+import copy
 import os
 
 from langchain_community.document_loaders import TextLoader
@@ -13,6 +14,32 @@ from custom_max_token_llm import CustomMaxTokenLLM
 # ANYSCALE_API_BASE = os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
 # ANYSCALE_API_KEY = os.environ.get("ANYSCALE_API_KEY", "KEY")
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
+
+
+# Define multiple prompts
+PROMPTS = [
+    """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
+
+    {text}
+
+    ZUSAMMENFASSUNG:""",
+    """Erstellen Sie eine prägnante und umfassende Zusammenfassung des bereitgestellten Artikels mit einer maximalen Länge von 864 Tokens. Halten Sie sich an folgende Richtlinien:
+
+Erstellen Sie eine Zusammenfassung, die detailliert, gründlich, ausführlich und komplex ist und dabei Klarheit und Prägnanz behält.
+
+Integrieren Sie Hauptgedanken und wesentliche Informationen, entfernen Sie überflüssige Inhalte und konzentrieren Sie sich auf zentrale Aspekte.
+
+Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung externer Informationen:
+
+    {text}
+
+    ZUSAMMENFASSUNG:""",
+    """Schreiben Sie eine Zusammenfassung des folgenden Textes mit einer maximalen Länge von 864 Tokens. Schreiben Sie die Zusammenfassung so, dass sie ein Kleinkind verstehen würde:
+
+    {text}
+
+    ZUSAMMENFASSUNG:""",
+]
 
 
 def load_data(doc):
@@ -32,7 +59,7 @@ def get_text_chunks_langchain(text):
     return docs
 
 
-def summarize(loaded_text):
+def summarize(loaded_text, promp_index=None):
     max_tokens = 864
 
     # Initialize the base language model
@@ -44,30 +71,9 @@ def summarize(loaded_text):
 
     custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=max_tokens)
 
-    # Define multiple prompts
-    prompts = [  # TODO: move to its own file
-        """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
-
-        {text}
-
-        ZUSAMMENFASSUNG:""",
-        """Erstellen Sie eine prägnante und umfassende Zusammenfassung des bereitgestellten Artikels mit einer maximalen Länge von 864 Tokens. Halten Sie sich an folgende Richtlinien:
-
-    Erstellen Sie eine Zusammenfassung, die detailliert, gründlich, ausführlich und komplex ist und dabei Klarheit und Prägnanz behält.
-
-    Integrieren Sie Hauptgedanken und wesentliche Informationen, entfernen Sie überflüssige Inhalte und konzentrieren Sie sich auf zentrale Aspekte.
-
-    Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung externer Informationen:
-
-        {text}
-
-        ZUSAMMENFASSUNG:""",
-        """Schreiben Sie eine Zusammenfassung des folgenden Textes mit einer maximalen Länge von 864 Tokens. Schreiben Sie die Zusammenfassung so, dass sie ein Kleinkind verstehen würde:
-
-        {text}
-
-        ZUSAMMENFASSUNG:""",
-    ]
+    prompts = copy.copy(
+        PROMPTS if promp_index is None else [PROMPTS[promp_index]]
+    )
 
     # Process each prompt and store the output in the appropriate column
     for i, prompt in enumerate(prompts):
@@ -85,22 +91,4 @@ def summarize(loaded_text):
         output = summary["output_text"]
         print(f"Prompt {i+1} Summary: {output}")
 
-    # def summarize(loaded_text):
-    # # Instantiate LLM
-    # # llm = Ollama(model="phi3")
-
-    # # Define prompt
-    # template = """Schreiben Sie eine Zusammenfassung des folgenden Textes:
-
-    # {text}
-
-    # ZUSAMENFASSUNG:"""
-    # prompt_template = PromptTemplate(
-    #     template=template, input_variables=["text"]
-    # )
-    # # loaded_text = load_data(doc)
-    # summary = chain.invoke(get_text_chunks_langchain(loaded_text))
-    # output = summary["output_text"]
-    # print(output)
-    # save_summary(output)
-    # return output
+    return output
