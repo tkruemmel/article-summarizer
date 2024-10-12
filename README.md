@@ -1,14 +1,37 @@
-# article-summarizer
+# Article Summarizer
 
-To build and then run docker conatiner:
+### Deploying app through docker
+
+TODO: Explain the two apps.
+
+To build and then run docker conatiner of main api based app:
 
     docker build -t flaskapi:latest .
-    docker-compose up -d
-    docker exec -it article-summarizer_ollama-container_1 ollama run phi
+    LLM_HOME=api_only docker-compose --profile api_only up -d
 
-    # older commands probably no longer needed
-    docker run -p 5001:5000 flaskapi:latest
-    docker run --env-file .env flaskapi:latest
+To run (and download) the smaller local llm version of the app:
+
+    docker build -t flaskapi:latest .
+    docker pull ollama/ollama:latest
+    LLM_HOME=local_llm docker-compose --profile local_llm up -d
+
+Once deployed app can be found at `http://0.0.0.0:8501/`
+
+
+Other helpful docker commands:
+
+    docker-compose down
+    docker system prune -a
+
+
+### Useful commands for running evaluation
+
+Local virtual env commands:
+
+    python3 -m venv myvenv
+    source myvenv/bin/activate
+    
+    deactivate
 
 To install requirements:
 
@@ -17,18 +40,6 @@ To install requirements:
 To update requirements:
 
     pip3 freeze > requirements.txt
-
-Other helpful docker commands:
-
-    docker-compose down
-    docker system prune -a
-
-Local virtual env commands:
-
-    python3 -m venv myvenv
-    source myvenv/bin/activate
-    
-    deactivate
 
 deepeval login:
 

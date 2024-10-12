@@ -11,12 +11,10 @@ from langchain_together import Together
 from custom_max_token_llm import CustomMaxTokenLLM
 
 
-# ANYSCALE_API_BASE = os.environ["ANYSCALE_API_BASE"] = "https://api.endpoints.anyscale.com/v1"
-# ANYSCALE_API_KEY = os.environ.get("ANYSCALE_API_KEY", "KEY")
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
 
 
-# Define multiple prompts
+# define multiple prompts
 PROMPTS = [
     """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
 
@@ -42,23 +40,27 @@ Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung exter
 ]
 
 
+# load a document using langchain's TextLoader
 def load_data(doc):
     loader = TextLoader(doc)
     data = loader.load()
     return data
 
 
+# save summary to txt file
 def save_summary(summary):
     with open("summary.txt", "w+") as file:
         file.writelines(summary)
 
 
+# split content into chunks
 def get_text_chunks_langchain(text):
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
     return docs
 
 
+# generate summary from given content based on the chosen prompt(s)
 def summarize(loaded_text, promp_index=None):
     max_tokens = 864
 
@@ -71,24 +73,29 @@ def summarize(loaded_text, promp_index=None):
 
     custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=max_tokens)
 
+    # if prompt_index is specified and a valid index of available prompts,
+    # generate summary using only that prompt, otherwise use all
     prompts = copy.copy(
-        PROMPTS if promp_index is None else [PROMPTS[promp_index]]
+        PROMPTS
+        if promp_index is None or promp_index not in range(0, len(PROMPTS))
+        else [PROMPTS[promp_index]]
     )
 
-    # Process each prompt and store the output in the appropriate column
+    # process each prompt and store the output in the appropriate column
     for i, prompt in enumerate(prompts):
         prompt_template = PromptTemplate(
             template=prompt, input_variables=["text"]
         )
 
-        # Define the summarization chain for the current prompt
+        # define the summarization chain for the current prompt
         chain = load_summarize_chain(
             custom_llm, chain_type="stuff", prompt=prompt_template, verbose=True
         )
 
-        # Generate the summary for the current prompt
+        # generate the summary for the current prompt
         summary = chain.invoke(loaded_text)
         output = summary["output_text"]
         print(f"Prompt {i+1} Summary: {output}")
 
+    # return last generated summary
     return output

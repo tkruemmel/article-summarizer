@@ -1,6 +1,8 @@
 services:
   ollama-container:
     build: .
+    profiles:
+      - local_llm
     image: ollama/ollama
     volumes:
       - ./data/ollama:/root/.ollama
@@ -8,12 +10,14 @@ services:
       - 11434:11434
   streamlit-app:
     build: .
+    profiles:
+      - api_only
+      - local_llm
     image: flaskapi:latest
     environment:
       - TOGETHER_API_KEY=${TOGETHER_API_KEY}
       - ANYSCALE_API_KEY=${ANYSCALE_API_KEY}
       - CONFIDENT_API_KEY=${CONFIDENT_API_KEY}
+      - LLM_HOME=${LLM_HOME}
     ports:
       - 8501:8501
-
-# TODO: separate out ollama part so it can be run separately
