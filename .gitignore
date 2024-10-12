@@ -3,4 +3,9 @@
 *.pyo
 *.log
 __pycache__/
-/venv
+data/
+venv/
+myvenv/
+.env
+app/summary.txt
+app/post.txt
