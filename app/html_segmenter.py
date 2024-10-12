@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 
 
+# class to help process and organize content from kgk api, removing html while
+# maintaining the important formatting information in the resulting segments
 class HTMLSegmenter:
     def __init__(self, html):
         self.soup = BeautifulSoup(html, 'html.parser')

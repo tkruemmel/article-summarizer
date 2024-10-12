@@ -14,10 +14,10 @@ app_api = Flask(__name__)
 description_html = '''
     <!DOCTYPE html>
     <head>
-        <title>API Landing</title>
+        <title>Article Summarizer</title>
     </head>
     <body>  
-        <h3>A simple API using Flask</h3>
+        <h3>A simple API to generate summaries from klassegegenklasse articles.</h3>
         <a href="http://localhost:5000/api?url=https://www.klassegegenklasse.org/">sample request</a>
     </body>
     '''
@@ -29,8 +29,7 @@ def description():
     return description_html
 
 
-# requires user string argument: url
-# returns error message if wrong arguments are passed.
+# return generated summary for valid user input url
 @app_api.route('/api', methods=['GET'])
 def get_content_from_url():
     required_params = ['url']
@@ -55,6 +54,7 @@ def get_content_from_url():
         summary = summarize(
             content.get('content', {}).get('rendered'), promp_index=0
         )  # TODO: change prompt choice?
+
         assert (  # check that summary was generated
             summary is not None
         ), "Could not generate summary from retrieved content."
@@ -66,8 +66,7 @@ def get_content_from_url():
         {
             'status': 'success',
             'slug': content.get('slug', ''),
-            'real_summary': summary,
-            # 'summary': content.get('content', {}).get('rendered'),
+            'summary': summary,
         }
     )
 
