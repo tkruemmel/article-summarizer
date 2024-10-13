@@ -28,8 +28,8 @@ Other helpful docker commands:
 
 Local virtual env commands:
 
-    python3 -m venv myvenv
-    source myvenv/bin/activate
+    python3 -m venv evalvenv
+    source evalvenv/bin/activate
     
     deactivate
 
