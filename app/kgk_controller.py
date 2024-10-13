@@ -1,7 +1,7 @@
 import requests
 
-from html_segmenter import HTMLSegmenter
-from summarizer import get_text_chunks_langchain, summarize
+from app.html_segmenter import HTMLSegmenter
+from app.summarizer import get_text_chunks_langchain, summarize
 
 
 BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"

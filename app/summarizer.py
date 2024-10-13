@@ -8,7 +8,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.document import Document
 from langchain_together import Together
 
-from custom_max_token_llm import CustomMaxTokenLLM
+from app.custom_max_token_llm import CustomMaxTokenLLM
 
 
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
