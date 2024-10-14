@@ -1,0 +1,274 @@
+[
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.4,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.40 because the summary contains contradictions regarding the AfD's beliefs and includes several pieces of extra information not present in the original text, which undermines its accuracy and coherence."
+    },
+    {
+        "score": 0.5,
+        "score_breakdown:": {
+            "Alignment": 0.5,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.50 because the summary includes several pieces of extra information that are not present in the original text, leading to a distortion of the original message. Additionally, there are unanswered questions that could have been addressed, indicating a lack of completeness in the summary."
+    },
+    {
+        "score": 0.2,
+        "score_breakdown:": {
+            "Alignment": 0.5,
+            "Coverage": 0.2
+        },
+        "reason": "The score is 0.20 because the summary contradicts key aspects of the original text regarding AI development, introduces unrelated extra information, and fails to address several questions that the original text can answer."
+    },
+    {
+        "score": 0.75,
+        "score_breakdown:": {
+            "Alignment": 0.7857142857142857,
+            "Coverage": 0.75
+        },
+        "reason": "The score is 0.75 because the summary contains contradictions regarding labor law's alignment with plaintiffs and includes extra information not found in the original text. Additionally, it leaves out a question that the original text could address, indicating some gaps in completeness."
+    },
+    {
+        "score": 0.5,
+        "score_breakdown:": {
+            "Alignment": 0.5555555555555556,
+            "Coverage": 0.5
+        },
+        "reason": "The score is 0.50 because the summary contains several contradictions to the original text, such as misrepresenting the intentions behind the construction project and the nature of the conflict with villagers. Additionally, it introduces extra information that is not present in the original text, which may mislead the reader regarding the context and outcomes of the situation. Furthermore, there are unanswered questions in the summary that the original text could address, indicating a lack of completeness."
+    },
+    {
+        "score": 0.2,
+        "score_breakdown:": {
+            "Alignment": 0.4444444444444444,
+            "Coverage": 0.2
+        },
+        "reason": "The score is 0.20 because the summary includes contradictions to the original text, introduces extra information not present in the original text, and fails to answer several key questions that the original text could clarify."
+    },
+    {
+        "score": 0.42857142857142855,
+        "score_breakdown:": {
+            "Alignment": 0.42857142857142855,
+            "Coverage": 0.75
+        },
+        "reason": "The score is 0.43 because the summary contains contradictions to the original text, introduces extra information not mentioned in the original text, and leaves out answers to questions that the original text addresses. This significantly impacts the overall quality and accuracy of the summarization."
+    },
+    {
+        "score": 0.4444444444444444,
+        "score_breakdown:": {
+            "Alignment": 0.4444444444444444,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.44 because the summary contains significant contradictions regarding Markus S\u00f6der's stance on militarization, presents extra details not found in the original text, and fails to answer specific questions that the original text addresses, undermining its overall accuracy and completeness."
+    },
+    {
+        "score": 0.0,
+        "score_breakdown:": {
+            "Alignment": 0.4166666666666667,
+            "Coverage": 0.0
+        },
+        "reason": "The score is 0.00 because the summary contradicts key aspects of the original text, such as the questioning of patriarchy, racism, and capitalism, as well as the critique of punitive feminism. Additionally, the summary fails to address several important questions that the original text can answer."
+    },
+    {
+        "score": 0.125,
+        "score_breakdown:": {
+            "Alignment": 0.125,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.12 because the summary contains significant contradictions regarding the origins of Hip-Hop, asserting it began in the 70s and in multiple locations, whereas the original text specifies the South Bronx without a timeframe. Additionally, the summary introduces unrelated extra information not found in the original text, leading to a lack of coherence and accuracy."
+    },
+    {
+        "score": 0.5,
+        "score_breakdown:": {
+            "Alignment": 1.0,
+            "Coverage": 0.5
+        },
+        "reason": "The score is 0.50 because the summary lacks critical details from the original text, and it does not answer important questions, which significantly affects its overall quality."
+    },
+    {
+        "score": 0.75,
+        "score_breakdown:": {
+            "Alignment": 0.9,
+            "Coverage": 0.75
+        },
+        "reason": "The score is 0.75 because the summary contradicts the original text by misrepresenting the concept of 'Patchwork-Familie' and does not address a key question regarding the definition of 'Vater', which limits its completeness."
+    },
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.5,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.40 because the summary includes extra information not found in the original text and fails to address key questions that the original text can answer, leading to a lack of clarity and completeness."
+    },
+    {
+        "score": 0.0,
+        "score_breakdown:": {
+            "Alignment": 0.4,
+            "Coverage": 0.0
+        },
+        "reason": "The score is 0.00 because the summary contains multiple pieces of extra information that were not present in the original text, which misrepresents the content and focus of the original. Additionally, it fails to address important questions that the original text could answer, indicating a lack of comprehension and accuracy in the summarization process."
+    },
+    {
+        "score": 0.4666666666666667,
+        "score_breakdown:": {
+            "Alignment": 0.4666666666666667,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.47 because the summary contains contradictions regarding the number of women injured, introduces extra information that is not present in the original text, and omits answers to relevant questions that could be addressed by the original text."
+    },
+    {
+        "score": 0.5,
+        "score_breakdown:": {
+            "Alignment": 0.75,
+            "Coverage": 0.5
+        },
+        "reason": "The score is 0.50 because the summary contradicts the original text regarding the goal of cutting personnel costs and introduces extra information about job losses and regional economic impact that was not mentioned in the original text. Additionally, there are questions the original text can answer that are not addressed in the summary."
+    },
+    {
+        "score": 0.6923076923076923,
+        "score_breakdown:": {
+            "Alignment": 0.6923076923076923,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.69 because the summary includes extra information that is not present in the original text, which can lead to misunderstandings or misinterpretations of the content. Additionally, there are questions that the original text could address but are not answered in the summary, indicating that it lacks completeness."
+    },
+    {
+        "score": 0.6923076923076923,
+        "score_breakdown:": {
+            "Alignment": 0.6923076923076923,
+            "Coverage": 0.75
+        },
+        "reason": "The score is 0.69 because the summary contains contradictions to the original text regarding the author's intentions and introduces extra information that is not present in the original text, such as a quote from Malcolm X. Additionally, it fails to address a specific question that the original text can answer, indicating a lack of completeness and accuracy."
+    },
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.5,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.40 because the summary contains significant contradictions with the original text, including incorrect claims about obligations related to arrest warrants and a misrepresentation of the German government's stance. Additionally, the summary introduces extra information that is not found in the original text, which leads to a distorted understanding of the issues. Furthermore, it fails to answer several pertinent questions that the original text addresses, indicating a lack of comprehensiveness."
+    },
+    {
+        "score": 0.0,
+        "score_breakdown:": {
+            "Alignment": 0.0,
+            "Coverage": 0.0
+        },
+        "reason": "The score is 0.00 because the summary includes extensive extra information not found in the original text, significantly misrepresenting its content and failing to address several key questions that the original text can answer."
+    },
+    {
+        "score": 0.2962962962962963,
+        "score_breakdown:": {
+            "Alignment": 0.2962962962962963,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.30 because the summary contradicts key points from the original text regarding refugee rejections and includes numerous pieces of extra information that were not mentioned in the original, leading to a significant misrepresentation of the source material."
+    },
+    {
+        "score": 0.2857142857142857,
+        "score_breakdown:": {
+            "Alignment": 0.2857142857142857,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.29 because the summary contains contradictions regarding the implementation of uniform standards and the role of police and courts, which misrepresents the original text. Additionally, the summary includes several pieces of extra information not present in the original text, further diminishing its accuracy and reliability. There are also unanswered questions that the original text could clarify, indicating a lack of completeness in the summary."
+    },
+    {
+        "score": 0.6,
+        "score_breakdown:": {
+            "Alignment": 1.0,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.60 because the summary provides relevant information but fails to address important questions that the original text can answer, resulting in an incomplete representation of the content."
+    },
+    {
+        "score": 0.2,
+        "score_breakdown:": {
+            "Alignment": 0.21052631578947367,
+            "Coverage": 0.2
+        },
+        "reason": "The score is 0.20 because the summary contradicts key points from the original text, such as the implications of same-sex marriage on parental rights, and introduces numerous details not mentioned in the original text, leading to a significant misrepresentation of the KKE's views. Additionally, several critical questions remain unanswered, indicating a lack of comprehensive coverage."
+    },
+    {
+        "score": 0.8,
+        "score_breakdown:": {
+            "Alignment": 0.8,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.80 because the summary contains a significant contradiction regarding the number of students involved in university committees, misrepresenting a specific amount as a vague larger group. Additionally, it includes extra information not present in the original text about the nature of discussions among members. However, it still captures the main ideas, resulting in a relatively high score."
+    },
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.47058823529411764,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.40 because the summary includes multiple instances of extra information that were not present in the original text, which detracts from its accuracy. Additionally, it fails to address several questions that the original text could answer, indicating a lack of completeness in the summarization."
+    },
+    {
+        "score": 0.2222222222222222,
+        "score_breakdown:": {
+            "Alignment": 0.2222222222222222,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.22 because the summary contains significant contradictions with the original text, such as misrepresenting the nature of the draft resolution, along with adding numerous details not present in the original text. This leads to a distorted understanding of the content, thereby making the summary less reliable and accurate."
+    },
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.75,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.40 because the summary includes extra information that contradicts or adds to the original text without proper context, leading to potential misunderstandings. Additionally, it fails to answer key questions that the original text addresses."
+    },
+    {
+        "score": 0.034482758620689655,
+        "score_breakdown:": {
+            "Alignment": 0.034482758620689655,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.03 because the summary contains significant contradictions to the original text, such as misrepresenting the nature of the political situation, and includes a substantial amount of irrelevant information that was not present in the original text. Additionally, it fails to address key questions that the original text can answer, which diminishes its overall quality as a summary."
+    },
+    {
+        "score": 0.5,
+        "score_breakdown:": {
+            "Alignment": 0.5,
+            "Coverage": 0.8
+        },
+        "reason": "The score is 0.50 because the summary contains extra information not present in the original text, which could lead to misunderstandings or misinterpretations of the original context. Additionally, the summary fails to answer key questions that the original text addresses, indicating a lack of completeness."
+    },
+    {
+        "score": 0.4,
+        "score_breakdown:": {
+            "Alignment": 0.7777777777777778,
+            "Coverage": 0.4
+        },
+        "reason": "The score is 0.40 because the summary contradicts key details from the original text by omitting the sources of criticism regarding the protest format, which undermines the accuracy of the information presented. Additionally, the summary fails to address several specific questions that the original text could answer, further diminishing its quality."
+    },
+    {
+        "score": 0.0,
+        "score_breakdown:": {
+            "Alignment": 0.5454545454545454,
+            "Coverage": 0.0
+        },
+        "reason": "The score is 0.00 because the summary contains multiple pieces of extra information that are not mentioned in the original text, which leads to a significant distortion of the original message. Additionally, there are numerous questions that the original text can answer but are left unaddressed in the summary, indicating a failure to capture the essential details and context."
+    },
+    {
+        "score": 0.2,
+        "score_breakdown:": {
+            "Alignment": 0.42857142857142855,
+            "Coverage": 0.2
+        },
+        "reason": "The score is 0.20 because the summary contains multiple contradictions to the original text, presenting inaccurate claims about the purpose of the demonstration and the content of speeches. Additionally, it includes extra information not found in the original text, which misrepresents the context and details of the event. Furthermore, there are several questions that the original text could answer but are not addressed in the summary, indicating a lack of completeness and accuracy."
+    },
+    {
+        "score": 0.6,
+        "score_breakdown:": {
+            "Alignment": 0.6666666666666666,
+            "Coverage": 0.6
+        },
+        "reason": "The score is 0.60 because the summary includes contradictions regarding Ariane M\u00fcller's ability to fight for workers' rights and introduces extra details about the demands from her supporters that are not present in the original text. Additionally, it fails to answer specific questions that the original text could address, impacting its overall quality."
+    }
+]

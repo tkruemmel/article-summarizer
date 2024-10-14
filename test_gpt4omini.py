@@ -20,7 +20,7 @@ def clean_html(raw_html):
 
 def add_content(csv_file_path, output_csv_file_path):
     df = pd.read_csv(csv_file_path)
-    df['Content'] = df['Link'].apply(
+    df["Content"] = df["Link"].apply(
         lambda link: (clean_html(find_specific_post(link) or "Invalid URL"))
     )
     df.to_csv(output_csv_file_path, index=False)
@@ -53,7 +53,6 @@ def convert_csv_to_json(csv_file_path):
         json_file = f"data_{hyphenated_column}.json"
         json_file_path = os.path.join(output_directory, json_file)
         df_filtered.to_json(json_file_path, orient='records', indent=4)
-        print(f"File '{json_file_path}' created successfully!")
 
 
 def get_dataset(path):
@@ -66,7 +65,7 @@ def get_dataset(path):
     return dataset
 
 
-def evaluate(dataset):
+def evaluate(dataset, file_name):
     evaluation_results = []
     for test_case in dataset.test_cases:
         metric = SummarizationMetric(
@@ -74,26 +73,22 @@ def evaluate(dataset):
         )
         metric.measure(test_case)
         score_dict = {
-            "test_case": test_case,
             "score": metric.score,
-            "reason": metric.reason,
+            "score_breakdown:": metric.score_breakdown,
+            "reason": metric.reason
         }
         evaluation_results.append(score_dict)
-        print(metric.score)
-        # print(metric.reason)
-        print(metric.score_breakdown)
-    # base_name = dataset[9:-5]
-    base_name = dataset[5:-5]
-    output_file = f"{base_name}_eval.json"
-    with open(output_file, 'w') as file:
-        file.write(json.dumps(evaluation_results, indent=4))
+    file_name = file_name[9:-5]
+    output_file = f"results/{file_name}_eval.json"
+    with open(output_file, "w") as file:
+        json.dump(evaluation_results, file, indent=4)
 
 
 # add_content("KGK-Zusammenfassungen.csv", "KGK-ZF-new.csv")
 # convert_csv_to_json("KGK-ZF-new.csv")
 
 datasets = [
-    "new_data/data_Llama3-Z1.json",
+    "new_data/data_Llama-3-Z1.json",
     "new_data/data_Llama3-Z2.json",
     "new_data/data_Llama3-Z3.json",
     "new_data/data_Mistral-Z1.json",
@@ -106,11 +101,6 @@ datasets = [
 ]
 
 
-ds = get_dataset("new_data/data_Llama3-Z2.json")  # test
-evaluate(ds)
-
-# evaluate(ds)
-# for dat in datasets:
-# ds = get_dataset(dat)
-# print(ds)
-# evaluate(ds)
+for file in datasets:
+    dataset = get_dataset(file)
+    evaluate(dataset, file)
