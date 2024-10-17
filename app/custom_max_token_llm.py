@@ -6,7 +6,7 @@ from typing import Optional
 class CustomMaxTokenLLM(LLM):
     llm: LLM
     max_tokens: int = Field(
-        ..., description="Maximum number of tokens for the output"
+        ..., description='Maximum number of tokens for the output'
     )
 
     def __init__(self, llm: LLM, max_tokens: int):
@@ -44,7 +44,7 @@ class CustomMaxTokenLLM(LLM):
 
     @property
     def _llm_type(self) -> str:
-        return "custom_max_token_llm"
+        return 'custom_max_token_llm'
 
     async def _acall(self, prompt: str, stop: Optional[list] = None) -> str:
-        raise NotImplementedError("This LLM does not support async operations.")
+        raise NotImplementedError('This LLM does not support async operations.')

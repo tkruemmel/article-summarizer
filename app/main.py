@@ -44,8 +44,8 @@ st.title('Article Summarizer')
 if 'messages' not in st.session_state.keys():
     st.session_state.messages = [
         {
-            'role': "assistant",
-            "content": "Bitte geben Sie eine URL an, die Sie zusammengefasst haben möchten.",
+            'role': 'assistant',
+            'content': 'Bitte geben Sie eine URL an, die Sie zusammengefasst haben möchten.',
         }
     ]
 
@@ -92,7 +92,7 @@ if st.session_state.messages[-1]['role'] != 'assistant':
             if st.session_state.messages[-1].get('error') == None:
                 if LLM_HOME == 'local_llm':
                     response = send_prompt(
-                        st.session_state.messages[-1]["llmContent"]
+                        st.session_state.messages[-1]['llmContent']
                     )
                 else:
                     response = summarize(

@@ -57,7 +57,7 @@ def get_content_from_url():
 
         assert (  # check that summary was generated
             summary is not None
-        ), "Could not generate summary from retrieved content."
+        ), 'Could not generate summary from retrieved content.'
 
     except AssertionError as err:
         return json.dumps({'status': 'error', 'message': str(err)})

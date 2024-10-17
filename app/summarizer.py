@@ -11,17 +11,17 @@ from langchain_together import Together
 from custom_max_token_llm import CustomMaxTokenLLM
 
 
-TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY", "KEY")
+TOGETHER_API_KEY = os.environ.get('TOGETHER_API_KEY', 'KEY')
 
 
 # define multiple prompts
 PROMPTS = [
-    """Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
+    '''Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
 
     {text}
 
-    ZUSAMMENFASSUNG:""",
-    """Erstellen Sie eine prägnante und umfassende Zusammenfassung des bereitgestellten Artikels mit einer maximalen Länge von 864 Tokens. Halten Sie sich an folgende Richtlinien:
+    ZUSAMMENFASSUNG:''',
+    '''Erstellen Sie eine prägnante und umfassende Zusammenfassung des bereitgestellten Artikels mit einer maximalen Länge von 864 Tokens. Halten Sie sich an folgende Richtlinien:
 
 Erstellen Sie eine Zusammenfassung, die detailliert, gründlich, ausführlich und komplex ist und dabei Klarheit und Prägnanz behält.
 
@@ -31,12 +31,12 @@ Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung exter
 
     {text}
 
-    ZUSAMMENFASSUNG:""",
-    """Schreiben Sie eine Zusammenfassung des folgenden Textes mit einer maximalen Länge von 864 Tokens. Schreiben Sie die Zusammenfassung so, dass sie ein Kleinkind verstehen würde:
+    ZUSAMMENFASSUNG:''',
+    '''Schreiben Sie eine Zusammenfassung des folgenden Textes mit einer maximalen Länge von 864 Tokens. Schreiben Sie die Zusammenfassung so, dass sie ein Kleinkind verstehen würde:
 
     {text}
 
-    ZUSAMMENFASSUNG:""",
+    ZUSAMMENFASSUNG:''',
 ]
 
 
@@ -49,7 +49,7 @@ def load_data(doc):
 
 # save summary to txt file
 def save_summary(summary):
-    with open("summary.txt", "w+") as file:
+    with open('summary.txt', 'w+') as file:
         file.writelines(summary)
 
 
@@ -66,7 +66,7 @@ def summarize(loaded_text, promp_index=None):
 
     # Initialize the base language model
     base_llm = Together(
-        model="mistralai/Mixtral-8x22B-Instruct-v0.1",
+        model='mistralai/Mixtral-8x22B-Instruct-v0.1',
         together_api_key=TOGETHER_API_KEY,
         max_tokens=3500,  # Set the max_tokens value here
     )
@@ -84,18 +84,18 @@ def summarize(loaded_text, promp_index=None):
     # process each prompt and store the output in the appropriate column
     for i, prompt in enumerate(prompts):
         prompt_template = PromptTemplate(
-            template=prompt, input_variables=["text"]
+            template=prompt, input_variables=['text']
         )
 
         # define the summarization chain for the current prompt
         chain = load_summarize_chain(
-            custom_llm, chain_type="stuff", prompt=prompt_template, verbose=True
+            custom_llm, chain_type='stuff', prompt=prompt_template, verbose=True
         )
 
         # generate the summary for the current prompt
         summary = chain.invoke(loaded_text)
-        output = summary["output_text"]
-        print(f"Prompt {i+1} Summary: {output}")
+        output = summary['output_text']
+        print(f'Prompt {i+1} Summary: {output}')
 
     # return last generated summary
     return output
