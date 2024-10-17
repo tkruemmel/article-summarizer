@@ -1,4 +1,4 @@
-from eval_utils import get_posts
+from app.eval.eval_utils import get_posts
 import app.summarizer as summarizer
 import json
 import os
@@ -33,6 +33,21 @@ def generate_data(posts, model):
         file.write(json.dumps(generated_data, indent=4))
 
 
+if __name__ == "__main__":
+    os.mkdir("data")
+    models = ["meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+              "mistralai/Mixtral-8x22B-Instruct-v0.1",
+              "google/gemma-2-27b-it",
+              "google/gemma-2-9b-it"
+              ]
+    posts = get_posts()
+    for model in models:
+        generate_data(posts, model)
+    with open("posts.json", "r") as file:
+        posts = json.load(file)
+        for model in models:
+            generate_data(posts, model)
+=======
 if __name__ == '__main__':
     os.mkdir('data')
     models = [
@@ -48,3 +63,4 @@ if __name__ == '__main__':
     # posts = json.load(file)
     # for model in models:
     # generate_data(posts, model)
+>>>>>>> 1af5405dfac17d2562133bbb9b7afde4e651d106:generate_test_data.py

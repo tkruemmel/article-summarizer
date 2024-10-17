@@ -1,11 +1,9 @@
 import json
 import os
 import pandas as pd
-
 from bs4 import BeautifulSoup
 from deepeval.dataset import EvaluationDataset
 from deepeval.metrics import SummarizationMetric
-
 from app.kgk_controller import find_specific_post
 
 
@@ -106,5 +104,6 @@ datasets = [
 
 
 for file in datasets:
-    dataset = get_dataset(file)
-    evaluate(dataset, file)
+    #dataset = get_dataset(file)
+    #evaluate(dataset, file)
+    print(file)
