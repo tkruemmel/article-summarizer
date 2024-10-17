@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-eval_dir = "../../results"
+eval_dir = "results"
 output_dir = "plots/"
 
 os.makedirs(output_dir, exist_ok=True)

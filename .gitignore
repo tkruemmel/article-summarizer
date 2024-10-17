@@ -3,7 +3,7 @@
 *.pyo
 *.log
 __pycache__/
-data/
+app/eval/data/
 .env
 app/summary.txt
 app/post.txt
