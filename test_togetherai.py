@@ -1,19 +1,20 @@
-from typing import Optional
-
-from pydantic import BaseModel
-from deepeval.models.base_model import DeepEvalBaseLLM
-from deepeval.metrics import SummarizationMetric
-from deepeval.dataset import EvaluationDataset
 import json
+import os
+
+from deepeval.dataset import EvaluationDataset
+from deepeval.metrics import SummarizationMetric
+from deepeval.models.base_model import DeepEvalBaseLLM
+from pydantic import BaseModel
 from together import Together
 
 
-# set TOGETHER_API_KEY=key
-
-# deepeval login --confident-api-key key
+# run with:
+# deepeval login --confident-api-key ${CONFIDENT_API_KEY}
 # deepeval test run test_togetherai.py
 
-TOGETHER_API_KEY="KEY"
+
+TOGETHER_API_KEY = os.environ.get('TOGETHER_API_KEY', 'KEY')
+
 client = Together(api_key=TOGETHER_API_KEY)
 
 
@@ -28,27 +29,23 @@ class TogetherLLM(DeepEvalBaseLLM):
         # llm = client.completions.create(model=self.model, prompt=prompt)
         # return llm.choices[0].text
 
-        print("----> SCHEMA: ", schema.model_json_schema())  # TODO: remove
-
         llm = client.chat.completions.create(
             model=self.model,
             messages=[
                 {
-                    "role": "system",
-                    "content": "The following are questions about a news article. Only answer in JSON.",
+                    'role': 'system',
+                    'content': 'The following are questions about a news article. Only answer in JSON.',
                 },
                 {
-                    "role": "user",
-                    "content": prompt,
+                    'role': 'user',
+                    'content': prompt,
                 },
             ],
             response_format={
-                "type": "json_object",
-                "schema": schema.model_json_schema(),
+                'type': 'json_object',
+                'schema': schema.model_json_schema(),
             },
         )
-
-        print("----> OUTPUT: ", llm.choices[0].message.content)  # TODO: remove
 
         json_result = json.loads(llm.choices[0].message.content)
         return schema(**json_result)
@@ -61,17 +58,17 @@ class TogetherLLM(DeepEvalBaseLLM):
             model=self.model,
             messages=[
                 {
-                    "role": "system",
-                    "content": "The following are questions about a news article. Only answer in JSON.",
+                    'role': 'system',
+                    'content': 'The following are questions about a news article. Only answer in JSON.',
                 },
                 {
-                    "role": "user",
-                    "content": prompt,
+                    'role': 'user',
+                    'content': prompt,
                 },
             ],
             response_format={
-                "type": "json_object",
-                "schema": schema.model_json_schema(),
+                'type': 'json_object',
+                'schema': schema.model_json_schema(),
             },
         )
 
@@ -79,10 +76,10 @@ class TogetherLLM(DeepEvalBaseLLM):
         return schema(**json_result)
 
     def get_model_name(self):
-        return "Custom together.ai LLM"
+        return 'Custom together.ai LLM'
 
 
-custom_model = TogetherLLM(model="mistralai/Mixtral-8x7B-Instruct-v0.1")
+custom_model = TogetherLLM(model='mistralai/Mixtral-8x7B-Instruct-v0.1')
 
 metric = SummarizationMetric(
     threshold=0.5, model=custom_model, async_mode=False
@@ -90,9 +87,9 @@ metric = SummarizationMetric(
 
 dataset = EvaluationDataset()
 dataset.add_test_cases_from_json_file(
-    file_path="data.json",
-    input_key_name="content",
-    actual_output_key_name="summary",
+    file_path='data.json',
+    input_key_name='content',
+    actual_output_key_name='summary',
 )
 
 evaluation_results = []
@@ -100,14 +97,14 @@ evaluation_results = []
 for test_case in dataset.test_cases:
     metric.measure(test_case)
     score_dict = {
-        "test_case": test_case,
-        "score": metric.score,
-        "reason": metric.reason,
+        'test_case': test_case,
+        'score': metric.score,
+        'reason': metric.reason,
     }
     evaluation_results.append(score_dict)
     print(metric.score)
     print(metric.reason)
 
 
-with open("evaluation_results.json", "w") as file:
+with open('evaluation_results.json', 'w') as file:
     file.write(json.dumps(evaluation_results, indent=4))

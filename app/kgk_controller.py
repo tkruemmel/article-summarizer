@@ -1,11 +1,12 @@
+import os
 import requests
 
 from app.html_segmenter import HTMLSegmenter
 from app.summarizer import get_text_chunks_langchain, summarize
 
 
-BASE_API_URL = "https://klassegegenklasse.org/wp-json/wp/v2/posts"
-BASE_WEB_URL = "klassegegenklasse.org/"
+BASE_API_URL = os.environ.get('BASE_API_URL')
+BASE_WEB_URL = 'klassegegenklasse.org/'
 
 
 # use HTMLSegmenter to format content appropriately to be summarized
