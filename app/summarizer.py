@@ -1,7 +1,6 @@
 import copy
 import os
 
-from langchain_community.document_loaders import TextLoader
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
@@ -60,7 +59,7 @@ def summarize(loaded_text, promp_index=None):
 
     # Initialize the base language model
     base_llm = Together(
-        model='mistralai/Mixtral-8x22B-Instruct-v0.1',
+        model='Qwen/Qwen2-72B-Instruct',
         together_api_key=TOGETHER_API_KEY,
         max_tokens=3500,  # Set the max_tokens value here
     )
