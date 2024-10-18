@@ -40,12 +40,6 @@ Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung exter
 ]
 
 
-# load a document using langchain's TextLoader
-def load_data(doc):
-    loader = TextLoader(doc)
-    data = loader.load()
-    return data
-
 
 # save summary to txt file
 def save_summary(summary):
