@@ -2,6 +2,7 @@ import json
 
 from validators import url as validate_url
 from flask import Flask, request
+
 from kgk_controller import find_specific_post
 from summarizer import summarize
 

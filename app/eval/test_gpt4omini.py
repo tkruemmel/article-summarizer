@@ -1,10 +1,18 @@
+import inspect
 import json
 import os
+import sys
 import pandas as pd
+
 from bs4 import BeautifulSoup
 from deepeval.dataset import EvaluationDataset
 from deepeval.metrics import SummarizationMetric
-from app.kgk_controller import find_specific_post
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+
+from kgk_controller import find_specific_post
 
 
 # run with:
@@ -44,7 +52,7 @@ def convert_csv_to_json(csv_file_path):
     ]
     static_columns = ['Titel', 'Link', 'Lesezeit (in min)', 'Content']
 
-    output_directory = 'new_data'
+    output_directory = f'{currentdir}/datasets'
     for summary_column in summary_columns:
         df_filtered = df[static_columns + [summary_column]]
         df_filtered = df_filtered.dropna(subset=[summary_column])
@@ -81,7 +89,7 @@ def evaluate(dataset, file_name):
         }
         evaluation_results.append(score_dict)
     file_name = file_name[9:-5]
-    output_file = f'results/{file_name}_eval.json'
+    output_file = f'{currentdir}/results/{file_name}_eval.json'
     with open(output_file, 'w') as file:
         json.dump(evaluation_results, file, indent=4)
 
@@ -90,20 +98,20 @@ def evaluate(dataset, file_name):
 # convert_csv_to_json('KGK-ZF-new.csv')
 
 datasets = [
-    'new_data/data_Llama-3-Z1.json',
-    'new_data/data_Llama3-Z2.json',
-    'new_data/data_Llama3-Z3.json',
-    'new_data/data_Mistral-Z1.json',
-    'new_data/data_Mistral-Z2.json',
-    'new_data/data_Mistral-Z3.json',
-    'new_data/data_Qwen2-Z1.json',
-    'new_data/data_Qwen2-Z2.json',
-    'new_data/data_Qwen2-Z3.json',
-    'new_data/data_Zusammenfassung.json',
+    f'{currentdir}/datasets/data_Llama-3-Z1.json',
+    f'{currentdir}/datasets/data_Llama3-Z2.json',
+    f'{currentdir}/datasets/data_Llama3-Z3.json',
+    f'{currentdir}/datasets/data_Mistral-Z1.json',
+    f'{currentdir}/datasets/data_Mistral-Z2.json',
+    f'{currentdir}/datasets/data_Mistral-Z3.json',
+    f'{currentdir}/datasets/data_Qwen2-Z1.json',
+    f'{currentdir}/datasets/data_Qwen2-Z2.json',
+    f'{currentdir}/datasets/data_Qwen2-Z3.json',
+    f'{currentdir}/datasets/data_Zusammenfassung.json',
 ]
 
 
 for file in datasets:
-    #dataset = get_dataset(file)
-    #evaluate(dataset, file)
+    dataset = get_dataset(file)
+    evaluate(dataset, file)
     print(file)

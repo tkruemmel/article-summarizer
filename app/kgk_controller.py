@@ -1,8 +1,8 @@
 import os
 import requests
 
-from app.html_segmenter import HTMLSegmenter
-from app.summarizer import get_text_chunks_langchain, summarize
+from html_segmenter import HTMLSegmenter
+from summarizer import get_text_chunks_langchain, summarize
 
 
 BASE_API_URL = os.environ.get('BASE_API_URL')
