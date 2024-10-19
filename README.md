@@ -18,8 +18,7 @@ Initially our application leveraged a locally downloaded, smaller LLM to generat
 
 Docker commands for clean up:
 
-[!CAUTION]
-:warning: **System prune command will delete all unused containers, networks, and images, not just those from this project**
+> :warning: **System prune command will delete all unused containers, networks, and images, not just those from this project**
 
     docker-compose down
     docker system prune -a
