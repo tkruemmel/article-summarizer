@@ -1,10 +1,11 @@
+import os
 import requests
 
 from html_segmenter import HTMLSegmenter
 from summarizer import get_text_chunks_langchain, summarize
 
 
-BASE_API_URL = 'https://klassegegenklasse.org/wp-json/wp/v2/posts'
+BASE_API_URL = os.environ.get('BASE_API_URL')
 BASE_WEB_URL = 'klassegegenklasse.org/'
 
 
@@ -83,6 +84,8 @@ def find_specific_post(search_url):
     # remove trailing slash if necessary
     search_url = search_url[:-1] if search_url[-1] == '/' else search_url
     slug = search_url.split('/')[-1]
+    # TODO: needs to accomodate slugs like that in https://www.klassegegenklasse.org/calendar/trans-widerstand-gegen-rechts-wie-kaempfen-wir-fuer-queere-befreiung/
+    # slug = search_url.split(BASE_WEB_URL)[-1]
 
     # search by slug first, then try by search terms from slug
     for search_string, search_func in [

@@ -2,10 +2,11 @@ import os
 import streamlit as st
 
 from langchain_community.llms import Ollama
+from lxml import html
 from validators import url as validate_url
+
 from summarizer import get_text_chunks_langchain, summarize
 from kgk_controller import create_full_text, find_specific_post
-from lxml import html
 
 
 LLM_HOME = os.environ.get('LLM_HOME', 'local_llm')
@@ -98,7 +99,7 @@ if st.session_state.messages[-1]['role'] != 'assistant':
                     response = summarize(
                         st.session_state.messages[-1]['llmContent'],
                         promp_index=0,
-                    )  # TODO: change prompt choice?
+                    )
             else:
                 response = st.session_state.messages[-1]['error']
 

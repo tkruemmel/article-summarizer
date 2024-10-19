@@ -2,6 +2,7 @@ import json
 
 from validators import url as validate_url
 from flask import Flask, request
+
 from kgk_controller import find_specific_post
 from summarizer import summarize
 
@@ -53,7 +54,7 @@ def get_content_from_url():
 
         summary = summarize(
             content.get('content', {}).get('rendered'), promp_index=0
-        )  # TODO: change prompt choice?
+        )
 
         assert (  # check that summary was generated
             summary is not None
