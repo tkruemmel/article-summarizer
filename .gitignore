@@ -3,9 +3,9 @@
 *.pyo
 *.log
 __pycache__/
-app/eval/data/
 .env
 app/summary.txt
 app/post.txt
 .deepeval
 /****venv
+data/

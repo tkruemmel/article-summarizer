@@ -99,7 +99,7 @@ if st.session_state.messages[-1]['role'] != 'assistant':
                     response = summarize(
                         st.session_state.messages[-1]['llmContent'],
                         promp_index=0,
-                    )  # TODO: change prompt choice?
+                    )
             else:
                 response = st.session_state.messages[-1]['error']
 
