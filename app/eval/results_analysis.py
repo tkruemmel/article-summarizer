@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-eval_dir = 'results'
+eval_dir = 'results/'
 output_dir = 'plots/'
 
 os.makedirs(output_dir, exist_ok=True)
@@ -50,7 +50,7 @@ def plot_scores(scores, title, ylabel, model_name, prompt_labels, filename):
 
     for bar in bars:
         yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2),
+        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 3),
                 ha='center', va='bottom')
 
     plt.tight_layout()
@@ -139,7 +139,7 @@ def plot_model_comparison(scores, title, ylabel, filename, model_labels):
 
     for bar in bars:
         yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2),
+        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 3),
                 ha='center', va='bottom')
 
     plt.tight_layout()
@@ -213,7 +213,7 @@ def plot_optimal_comparison(optimal_scores, title, filename, model_labels, promp
     for i, model in enumerate(model_labels):
         scores = [optimal_scores[model][cat] for cat in categories]
         for j, score in enumerate(scores):
-            ax.text(index[j] + i * bar_width, score + 0.02, round(score, 2), ha='center', va='bottom')
+            ax.text(index[j] + i * bar_width, score + 0.02, round(score, 3), ha='center', va='bottom')
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, filename))
@@ -263,10 +263,10 @@ def plot_optimal_vs_human(optimal_scores, human_scores, title, filename, model_l
     for i, model in enumerate(model_labels):
         scores = [optimal_scores[model][cat] for cat in categories]
         for j, score in enumerate(scores):
-            ax.text(index[j] + i * bar_width, score + 0.02, round(score, 2), ha='center', va='bottom')
+            ax.text(index[j] + i * bar_width, score + 0.02, round(score, 3), ha='center', va='bottom')
 
     for j, score in enumerate(human_scores_list):
-        ax.text(index[j] + len(model_labels) * bar_width, score + 0.02, round(score, 2), ha='center', va='bottom')
+        ax.text(index[j] + len(model_labels) * bar_width, score + 0.02, round(score, 3), ha='center', va='bottom')
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, filename))
