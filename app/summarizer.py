@@ -13,6 +13,16 @@ from custom_max_token_llm import CustomMaxTokenLLM
 TOGETHER_API_KEY = os.environ.get('TOGETHER_API_KEY', 'KEY')
 
 
+# Initialize the base language model
+base_llm = Together(
+    model='mistralai/Mixtral-8x22B-Instruct-v0.1',
+    together_api_key=TOGETHER_API_KEY,
+    max_tokens=3500,  # Set the max_tokens value here
+)
+
+custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=864)
+
+
 # define multiple prompts
 PROMPTS = [
     '''Schreiben Sie eine Zusammenfassung des folgenden Textes mit maximal 864 Token:
@@ -39,7 +49,6 @@ Verlassen Sie sich strikt auf den bereitgestellten Text, ohne Einbeziehung exter
 ]
 
 
-
 # save summary to txt file
 def save_summary(summary):
     with open('summary.txt', 'w+') as file:
@@ -55,17 +64,6 @@ def get_text_chunks_langchain(text):
 
 # generate summary from given content based on the chosen prompt(s)
 def summarize(loaded_text, promp_index=None):
-    max_tokens = 864
-
-    # Initialize the base language model
-    base_llm = Together(
-        model='Qwen/Qwen2-72B-Instruct',
-        together_api_key=TOGETHER_API_KEY,
-        max_tokens=3500,  # Set the max_tokens value here
-    )
-
-    custom_llm = CustomMaxTokenLLM(llm=base_llm, max_tokens=max_tokens)
-
     # if prompt_index is specified and a valid index of available prompts,
     # generate summary using only that prompt, otherwise use all
     prompts = copy.copy(
@@ -91,4 +89,30 @@ def summarize(loaded_text, promp_index=None):
         print(f'Prompt {i+1} Summary: {output}')
 
     # return last generated summary
+    return output
+
+
+def answer_questions(question, loaded_text):
+    prompt = (
+        'Bitte beantworten Sie die folgende(n) Frage(n) auf der Grundlage des folgenden Textes:\n\n'
+        + question
+        + '''
+
+    {text}
+
+    ANTWORT:'''
+    )
+
+    prompt_template = PromptTemplate(template=prompt, input_variables=['text'])
+
+    # define the chain for the current prompt
+    chain = load_summarize_chain(
+        custom_llm, chain_type='stuff', prompt=prompt_template, verbose=True
+    )
+
+    # generate the answer for the current prompt
+    answer = chain.invoke(loaded_text)
+    output = answer['output_text']
+
+    # return last generated answer
     return output
