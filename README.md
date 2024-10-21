@@ -1,5 +1,7 @@
 # Article Summarizer
 
+Please make sure you have saved the provided .env file to this directory! The app will not run properly wihtout it.
+
 ### Deploying app through docker
 
 To build and then run docker conatiner of main API-based app:

@@ -50,6 +50,7 @@ interegular==0.3.3
 itsdangerous==2.2.0
 Jinja2==3.1.4
 jiter==0.4.2
+joblib==1.4.2
 jsonpatch==1.33
 jsonpointer==3.0.0
 jsonschema==4.23.0
@@ -112,6 +113,9 @@ requests==2.32.3
 rich==13.7.1
 rpds-py==0.20.0
 safetensors==0.4.3
+scikit-learn==1.5.2
+scipy==1.14.1
+sentence-transformers==3.2.0
 sentencepiece==0.2.0
 sentry-sdk==2.12.0
 shellingham==1.5.4
@@ -124,6 +128,7 @@ streamlit==1.39.0
 sympy==1.12.1
 tabulate==0.9.0
 tenacity==8.4.2
+threadpoolctl==3.5.0
 tiktoken==0.7.0
 together==1.2.5
 tokenizers==0.19.1

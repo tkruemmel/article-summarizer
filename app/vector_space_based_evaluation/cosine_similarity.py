@@ -1,16 +1,18 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
-from transformers import AutoTokenizer, AutoModel
-import torch
+from transformers import AutoTokenizer
 import numpy as np
 
 # Load SBERT model
-model = SentenceTransformer('T-Systems-onsite/cross-en-de-roberta-sentence-transformer')
+model = SentenceTransformer(
+    'T-Systems-onsite/cross-en-de-roberta-sentence-transformer'
+)
 
-csv_file = 'KGK Zusammenfassungen.csv'
+csv_file = 'app/vector_space_based_evaluation/KGK Zusammenfassungen.csv'
 df = pd.read_csv(csv_file)
 
 tokenizer = AutoTokenizer.from_pretrained('deepset/gbert-base')
+
 
 # Function to calculate SBERT-based semantic similarity
 def sbert_similarity(str1, str2):
@@ -24,19 +26,49 @@ def sbert_similarity(str1, str2):
     else:
         return np.nan  # Return NaN if either input is not a string
 
-df['Similarity Llama3 Z1'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama 3 Z1']), axis=1)
-df['Similarity Llama3 Z2'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama3 Z2']), axis=1)
-df['Similarity Llama3 Z3'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama3 Z3']), axis=1)
 
-df['Similarity Qwen2 Z1'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z1']), axis=1)
-df['Similarity Qwen2 Z2'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z2']), axis=1)
-df['Similarity Qwen2 Z3'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z3']), axis=1)
+df['Similarity Llama3 Z1'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama 3 Z1']),
+    axis=1,
+)
+df['Similarity Llama3 Z2'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama3 Z2']),
+    axis=1,
+)
+df['Similarity Llama3 Z3'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Llama3 Z3']),
+    axis=1,
+)
 
-df['Similarity Mistral Z1'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z1']), axis=1)
-df['Similarity Mistral Z2'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z2']), axis=1)
-df['Similarity Mistral Z3'] = df.apply(lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z3']), axis=1)
+df['Similarity Qwen2 Z1'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z1']),
+    axis=1,
+)
+df['Similarity Qwen2 Z2'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z2']),
+    axis=1,
+)
+df['Similarity Qwen2 Z3'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Qwen2 Z3']),
+    axis=1,
+)
 
-output_file = 'output_with_similarities.csv'
+df['Similarity Mistral Z1'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z1']),
+    axis=1,
+)
+df['Similarity Mistral Z2'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z2']),
+    axis=1,
+)
+df['Similarity Mistral Z3'] = df.apply(
+    lambda row: sbert_similarity(row['Zusammenfassung'], row['Mistral Z3']),
+    axis=1,
+)
+
+output_file = 'app/vector_space_based_evaluation/output_with_similarities.csv'
 df.to_csv(output_file, index=False)
 
-print(f"Similarity scores (including Mistral, Llama3, and Qwen2) saved to {output_file}")
+print(
+    f"Similarity scores (including Mistral, Llama3, and Qwen2) saved to {output_file}"
+)
