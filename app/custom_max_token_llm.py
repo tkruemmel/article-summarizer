@@ -7,11 +7,9 @@ class CustomMaxTokenLLM(LLM):
     max_tokens: int = Field(..., description="Maximum number of tokens for the output")
 
     def __init__(self, llm: LLM, max_tokens: int):
-        # Initialize the LLM with given parameters
         super().__init__(llm=llm, max_tokens=max_tokens)
 
     def _call(self, prompt: str, stop: Optional[list] = None) -> str:
-        # This method is deprecated; use invoke instead
         response = self.invoke(prompt, stop=stop)
         return self._trim_to_punctuation(response)
 
@@ -31,7 +29,6 @@ class CustomMaxTokenLLM(LLM):
             return trimmed_text  # Return the full text if no punctuation is found
 
     def invoke(self, input: str, stop: Optional[list] = None) -> str:
-        # Ensure max_tokens is passed to the LLM invoke method
         response = self.llm.invoke(input=input, stop=stop, max_tokens=self.max_tokens)
         return self._trim_to_punctuation(response)
 
