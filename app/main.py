@@ -11,7 +11,7 @@ from kgk_controller import create_full_text, find_specific_post
 from input_validation import BlacklistUserMessage, LLMValidatorUserMessage
 from summarizer import get_text_chunks_langchain, summarize, answer_questions
 
-LLM_HOME = os.environ.get('LLM_HOME', 'local_llm')
+LLM_HOME = os.environ.get('LLM_HOME', 'api_only')
 
 
 # if the app is using the smaller locally downlowded llm initalize it
